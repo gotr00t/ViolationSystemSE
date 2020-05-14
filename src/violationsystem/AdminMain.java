@@ -5,7 +5,6 @@
  */
 package violationsystem;
 
-
 import java.awt.Color;
 import javax.swing.JFrame;
 
@@ -15,18 +14,12 @@ import javax.swing.JFrame;
  */
 public class AdminMain extends javax.swing.JFrame {
 
-      int mousepX;
-        int mousepY;
-    
-       
-       
-        
+    int mousepX;
+    int mousepY;
+
     public AdminMain() {
         initComponents();
-        
-        
-        
-        
+
     }
 
     /**
@@ -353,7 +346,7 @@ public class AdminMain extends javax.swing.JFrame {
         MainFrame.removeAll();
         MainFrame.repaint();
         MainFrame.revalidate();
-        
+
         MainFrame.add(scanPanel);
         MainFrame.repaint();
         MainFrame.revalidate();
@@ -384,7 +377,7 @@ public class AdminMain extends javax.swing.JFrame {
         int coorX = evt.getXOnScreen();
         int coorY = evt.getYOnScreen();
 
-        this.setLocation(coorX-mousepX, coorY-mousepY);
+        this.setLocation(coorX - mousepX, coorY - mousepY);
     }//GEN-LAST:event_MenuBarMouseDragged
 
     private void MenuBarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuBarMousePressed

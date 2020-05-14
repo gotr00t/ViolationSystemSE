@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonModel;
 
 /**
  *
@@ -33,6 +34,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        userRole = new javax.swing.ButtonGroup();
         bg = new javax.swing.JPanel();
         LoginButton = new javax.swing.JButton();
         username = new javax.swing.JTextField();
@@ -43,6 +45,8 @@ public class Login extends javax.swing.JFrame {
         close = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
         errorResponse = new javax.swing.JLabel();
+        Coordinator = new javax.swing.JRadioButton();
+        Administrator = new javax.swing.JRadioButton();
         bgg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,7 +65,7 @@ public class Login extends javax.swing.JFrame {
                 LoginButtonActionPerformed(evt);
             }
         });
-        bg.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 500, 300, 60));
+        bg.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 550, 300, 60));
 
         username.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         username.setForeground(new java.awt.Color(102, 102, 102));
@@ -98,7 +102,7 @@ public class Login extends javax.swing.JFrame {
                 ResetPasswordActionPerformed(evt);
             }
         });
-        bg.add(ResetPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 570, 150, 20));
+        bg.add(ResetPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 620, 150, 20));
 
         MenuBar.setBackground(new java.awt.Color(255, 153, 0));
         MenuBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -157,7 +161,15 @@ public class Login extends javax.swing.JFrame {
         bg.add(MenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1420, 54));
 
         errorResponse.setForeground(new java.awt.Color(225, 124, 24));
-        bg.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 470, 300, 20));
+        bg.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 520, 300, 20));
+
+        userRole.add(Coordinator);
+        Coordinator.setText("Coordinator");
+        bg.add(Coordinator, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 460, -1, -1));
+
+        userRole.add(Administrator);
+        Administrator.setText("Administrator");
+        bg.add(Administrator, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 490, -1, -1));
 
         bgg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bgg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/bgg.png"))); // NOI18N
@@ -206,6 +218,8 @@ public class Login extends javax.swing.JFrame {
 
         String Username = username.getText();
         String Password = password.getText();
+        Coordinator.setActionCommand("Coordinator");
+        Administrator.setActionCommand("Administrator");
 
         if (conn != null) {
 
@@ -220,43 +234,52 @@ public class Login extends javax.swing.JFrame {
 
             } else {
 
-                String sqlQry = "SELECT * FROM USERCREDENTIALS WHERE USERNAME=?";
-
                 try {
-
-                    PreparedStatement stmt = conn.prepareStatement(sqlQry);
-                    stmt.setString(1, Username);
-                    ResultSet records = stmt.executeQuery();
-                    records.next();
-                    String DBUser = records.getString("USERNAME");
-                    String DBPass = records.getString("PASSWORD");
-                    String DBRole = records.getString("ROLE");
-                    //String decryptPass = Security.decrypt(DBPass);
+                    PreparedStatement stmt;
+                    ResultSet records;
                     Login Checker = new Login();
-                    String valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
-                    //change variable to decryptPass for DBPass
-                    records.close();
-                    
-                    if (valResult.equals("UserConfirmed")) {
+                    String CoorQry = "SELECT * FROM COORDINATORS WHERE USERNAME=?";
+                    String AdminQry = "SELECT * FROM ADMINISTRATORS WHERE USERNAME=?";
+                    String DBUser;
+                    String DBPass;
+                    String Role = userRole.getSelection().getActionCommand();
+                    String valResult;
 
-                        switch (DBRole) {
+                    switch (Role) {
 
-                            case "Administrator":
+                        case "Coordinator":
+                            stmt = conn.prepareStatement(CoorQry);
+                            stmt.setString(1, Username);
+                            records = stmt.executeQuery();
+                            records.next();
+                            DBUser = records.getString("USERNAME");
+                            DBPass = records.getString("PASSWORD");
+                            valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
 
-                            new AdminMain().setVisible(true);
-                            this.dispose();
+                            if (valResult.equals("UserConfirmed")) {
+                                new CoorMain().setVisible(true);
+                                this.dispose();
+                            } else {
+                                errorResponse.setText("Invalid Username or Password");
+                            }
 
-                            case "Coordinator":
+                        case "Administrator":
+                            stmt = conn.prepareStatement(AdminQry);
+                            stmt.setString(1, Username);
+                            records = stmt.executeQuery();
+                            records.next();
+                            DBUser = records.getString("USERNAME");
+                            DBPass = records.getString("PASSWORD");
+                            valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
 
-                            new CoorMain().setVisible(true);
-                            this.dispose();
+                            if (valResult.equals("UserConfirmed")) {
+                                new AdminMain().setVisible(true);
+                                this.dispose();
+                            } else {
+                                errorResponse.setText("Invalid Username or Password");
+                            }
 
-                        }
-
-                    } else {
-                        errorResponse.setText("Username or Password is Invalid");
                     }
-
                 } catch (SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -326,6 +349,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton Administrator;
+    private javax.swing.JRadioButton Coordinator;
     private javax.swing.JButton LoginButton;
     private javax.swing.JPanel MenuBar;
     private javax.swing.JButton ResetPassword;
@@ -336,6 +361,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel logo;
     private javax.swing.JLabel minimize;
     private javax.swing.JPasswordField password;
+    private javax.swing.ButtonGroup userRole;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

@@ -22,7 +22,7 @@ public class ViolationSystem {
         Login LoginScreen = new Login();
         LoginScreen.setVisible(true);
         LoginScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
+
     }
-    
+
 }
