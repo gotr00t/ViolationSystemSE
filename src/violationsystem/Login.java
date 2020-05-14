@@ -251,33 +251,41 @@ public class Login extends javax.swing.JFrame {
                             stmt = conn.prepareStatement(CoorQry);
                             stmt.setString(1, Username);
                             records = stmt.executeQuery();
-                            records.next();
-                            DBUser = records.getString("USERNAME");
-                            DBPass = records.getString("PASSWORD");
-                            valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
-
-                            if (valResult.equals("UserConfirmed")) {
-                                new CoorMain().setVisible(true);
-                                this.dispose();
-                            } else {
+                            
+                            if (!records.next()) {
                                 errorResponse.setText("Invalid Username or Password");
+                            } else {
+                                DBUser = records.getString("USERNAME");
+                                DBPass = records.getString("PASSWORD");
+                                valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
+                                records.close();
+
+                                if (valResult.equals("UserConfirmed")) {
+                                    new CoorMain().setVisible(true);
+                                    this.dispose();
+                                }
                             }
+                        break;
 
                         case "Administrator":
                             stmt = conn.prepareStatement(AdminQry);
                             stmt.setString(1, Username);
                             records = stmt.executeQuery();
-                            records.next();
-                            DBUser = records.getString("USERNAME");
-                            DBPass = records.getString("PASSWORD");
-                            valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
-
-                            if (valResult.equals("UserConfirmed")) {
-                                new AdminMain().setVisible(true);
-                                this.dispose();
-                            } else {
+                            
+                            if (!records.next()) {
                                 errorResponse.setText("Invalid Username or Password");
+                            } else {
+                                DBUser = records.getString("USERNAME");
+                                DBPass = records.getString("PASSWORD");
+                                valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
+                                records.close();
+
+                                if (valResult.equals("UserConfirmed")) {
+                                    new AdminMain().setVisible(true);
+                                    this.dispose();
+                                }
                             }
+                        break;
 
                     }
                 } catch (SQLException ex) {
