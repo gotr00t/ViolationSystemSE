@@ -34,10 +34,10 @@ public class ResetPassword extends javax.swing.JFrame {
         cancel = new javax.swing.JButton();
         cpass = new javax.swing.JPasswordField();
         logo = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        LabelEmpId = new javax.swing.JLabel();
         EmpID = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        nPassLabel = new javax.swing.JLabel();
+        cPassLabel = new javax.swing.JLabel();
         npass = new javax.swing.JPasswordField();
         MenuBar = new javax.swing.JPanel();
         close = new javax.swing.JLabel();
@@ -98,10 +98,10 @@ public class ResetPassword extends javax.swing.JFrame {
         logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         bg.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("To reset password, please enter your Employee ID:  ");
-        bg.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, -1, -1));
+        LabelEmpId.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        LabelEmpId.setForeground(new java.awt.Color(51, 51, 51));
+        LabelEmpId.setText("To reset password, please enter your Employee ID:  ");
+        bg.add(LabelEmpId, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, -1, -1));
 
         EmpID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         EmpID.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -111,15 +111,15 @@ public class ResetPassword extends javax.swing.JFrame {
         });
         bg.add(EmpID, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 270, 260, 30));
 
-        jLabel2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel2.setText("New Password");
-        bg.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 310, -1, -1));
+        nPassLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        nPassLabel.setForeground(new java.awt.Color(102, 102, 102));
+        nPassLabel.setText("New Password");
+        bg.add(nPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 310, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel3.setText("Confirm Password");
-        bg.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 390, -1, -1));
+        cPassLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        cPassLabel.setForeground(new java.awt.Color(102, 102, 102));
+        cPassLabel.setText("Confirm Password");
+        bg.add(cPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 390, -1, -1));
 
         npass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         npass.setForeground(new java.awt.Color(102, 102, 102));
@@ -299,18 +299,18 @@ public class ResetPassword extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField EmpID;
+    private javax.swing.JLabel LabelEmpId;
     private javax.swing.JPanel MenuBar;
     private javax.swing.JPanel bg;
     private javax.swing.JLabel bgg;
+    private javax.swing.JLabel cPassLabel;
     private javax.swing.JButton cancel;
     private javax.swing.JLabel close;
     private javax.swing.JPasswordField cpass;
     private javax.swing.JLabel errorResponse;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel minimize;
+    private javax.swing.JLabel nPassLabel;
     private javax.swing.JPasswordField npass;
     private javax.swing.JButton save;
     // End of variables declaration//GEN-END:variables
