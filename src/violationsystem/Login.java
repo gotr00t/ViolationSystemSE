@@ -10,9 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ButtonModel;
 
 /**
  *
@@ -235,61 +232,55 @@ public class Login extends javax.swing.JFrame {
             } else {
 
                 try {
-                    PreparedStatement stmt;
-                    ResultSet records;
-                    Login Checker = new Login();
-                    String CoorQry = "SELECT * FROM COORDINATORS WHERE USERNAME=?";
-                    String AdminQry = "SELECT * FROM ADMINISTRATORS WHERE USERNAME=?";
-                    String DBUser;
-                    String DBPass;
-                    String Role = userRole.getSelection().getActionCommand();
-                    String valResult;
+                    String LogQry = "SELECT * FROM SYSTEMPRIMARYUSERS WHERE USERNAME=?";
+                    PreparedStatement stmt = conn.prepareStatement(LogQry);
+                    stmt.setString(1, Username);
+                    ResultSet records = stmt.executeQuery();
 
-                    switch (Role) {
+                    if (!records.next()) {
+                        errorResponse.setText("Invalid Username or Password");
+                    }
+                    String DBUser = records.getString("USERNAME");
+                    String DBPass = records.getString("PASSWORD");
+                    String decryptedPass = Security.decrypt(DBPass);
+                    String DBRole = records.getString("ROLE");
+                    String RoleSelected = userRole.getSelection().getActionCommand();
+
+                    Login Checker = new Login();
+                    String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
+
+                    switch (valResult) {
 
                         case "Coordinator":
-                            stmt = conn.prepareStatement(CoorQry);
-                            stmt.setString(1, Username);
-                            records = stmt.executeQuery();
-                            
-                            if (!records.next()) {
-                                errorResponse.setText("Invalid Username or Password");
-                            } else {
-                                DBUser = records.getString("USERNAME");
-                                DBPass = records.getString("PASSWORD");
-                                valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
-                                records.close();
 
-                                if (valResult.equals("UserConfirmed")) {
-                                    new CoorMain().setVisible(true);
-                                    this.dispose();
-                                }
-                            }
-                        break;
+                            new CoorMain().setVisible(true);
+                            records.close();
+                            this.dispose();
+                            break;
 
                         case "Administrator":
-                            stmt = conn.prepareStatement(AdminQry);
-                            stmt.setString(1, Username);
-                            records = stmt.executeQuery();
-                            
-                            if (!records.next()) {
-                                errorResponse.setText("Invalid Username or Password");
-                            } else {
-                                DBUser = records.getString("USERNAME");
-                                DBPass = records.getString("PASSWORD");
-                                valResult = Checker.ValidateCred(Username, Password, DBUser, DBPass);
-                                records.close();
 
-                                if (valResult.equals("UserConfirmed")) {
-                                    new AdminMain().setVisible(true);
-                                    this.dispose();
-                                }
-                            }
-                        break;
+                            new AdminMain().setVisible(true);
+                            records.close();
+                            this.dispose();
+                            break;
 
+                        case "InvalidUser":
+
+                            errorResponse.setText("Invalid Role Selected");
+                            records.close();
+                            break;
+
+                        case "InvalidCredentials":
+
+                            errorResponse.setText("Incorrect Username or Password");
+                            records.close();
+                            break;
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NullPointerException e) {
+                    errorResponse.setText("Please choose your assigned role");
+                } catch (SQLException sql) {
+                    sql.printStackTrace();
                 }
 
             }
@@ -325,16 +316,21 @@ public class Login extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -346,13 +342,22 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
-    public String ValidateCred(String Username, String Password, String DBUser, String DBPass) {
+    public String ValidateCred(String Username, String Password, String DBUser, String decryptedPass, String Role, String RoleSelected) {
 
-        //change DBPass to decryptPass
-        if (Username.equals(DBUser) && Password.equals(DBPass)) {
-            return "UserConfirmed";
+        if (Username.equals(DBUser) && Password.equals(decryptedPass)) {
+
+            if (Role.equals(RoleSelected) && Role.equals("Coordinator")) {
+                return "Coordinator";
+            } else if (Role.equals(RoleSelected) && Role.equals("Administrator")) {
+                return "Administrator";
+            } else if (Role.equals("MasterAdministrator")) {
+                return RoleSelected;
+            } else {
+                return "InvalidUser";
+            }
+
         } else {
-            return "Invalid Username or Password";
+            return "InvalidCredentials";
         }
     }
 

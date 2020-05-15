@@ -5,6 +5,12 @@
  */
 package violationsystem;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -15,6 +21,7 @@ public class ResetPassword extends javax.swing.JFrame {
 
     int mousepX;
     int mousepY;
+    Connection conn = DBConnector.ConnectDB();
 
     public ResetPassword() {
         initComponents();
@@ -48,7 +55,6 @@ public class ResetPassword extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1420, 790));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         bg.setMaximumSize(new java.awt.Dimension(1420, 600));
         bg.setMinimumSize(new java.awt.Dimension(1000, 600));
@@ -67,7 +73,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 saveActionPerformed(evt);
             }
         });
-        bg.add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 490, 310, 80));
+        bg.add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 500, 310, 80));
 
         cancel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         cancel.setForeground(new java.awt.Color(254, 254, 254));
@@ -81,7 +87,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 cancelActionPerformed(evt);
             }
         });
-        bg.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, 320, 80));
+        bg.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 500, 320, 80));
 
         cpass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         cpass.setForeground(new java.awt.Color(102, 102, 102));
@@ -191,7 +197,7 @@ public class ResetPassword extends javax.swing.JFrame {
 
         bg.add(MenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 1000, -1));
 
-        errorResponse.setText("errorResponse");
+        errorResponse.setForeground(new java.awt.Color(255, 9, 0));
         bg.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 470, 300, -1));
 
         bgg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -234,7 +240,34 @@ public class ResetPassword extends javax.swing.JFrame {
     }//GEN-LAST:event_npassKeyReleased
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        // TODO add your handling code here:
+        
+        if (npass.getText().equals(cpass.getText())) {
+
+            try {
+                String EmployeeID = EmpID.getText();
+                String sqlFetchID = "SELECT * FROM SYSTEMPRIMARYUSERS WHERE EmployeeID=?";
+                PreparedStatement stmt = conn.prepareStatement(sqlFetchID, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                stmt.setString(1, EmployeeID);
+                ResultSet records = stmt.executeQuery();
+
+                if (!records.next()) {
+                    errorResponse.setText("Employee not found");
+                } else {
+                    String encryptedPass = Security.encrypt(npass.getText());
+                    records.updateString("PASSWORD", encryptedPass);
+                    records.updateRow();
+                    records.close();
+                    errorResponse.setText("Password has been updated successfully");
+                }
+
+               } catch (SQLException ex) {
+                Logger.getLogger(ResetPassword.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            errorResponse.setText("Password Mismatch");
+        }
+
+
     }//GEN-LAST:event_saveActionPerformed
 
     private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
