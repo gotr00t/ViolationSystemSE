@@ -32,7 +32,7 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         userRole = new javax.swing.ButtonGroup();
-        bg = new javax.swing.JPanel();
+        Login = new javax.swing.JPanel();
         LoginButton = new javax.swing.JButton();
         username = new javax.swing.JTextField();
         password = new javax.swing.JPasswordField();
@@ -41,20 +41,21 @@ public class Login extends javax.swing.JFrame {
         MenuBar = new javax.swing.JPanel();
         close = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
-        errorResponse = new javax.swing.JLabel();
         Coordinator = new javax.swing.JRadioButton();
         Administrator = new javax.swing.JRadioButton();
+        errorResponse = new javax.swing.JLabel();
         bgg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Login.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         LoginButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         LoginButton.setForeground(new java.awt.Color(255, 255, 255));
         LoginButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/button.png"))); // NOI18N
         LoginButton.setText("Login");
+        LoginButton.setBorder(null);
         LoginButton.setContentAreaFilled(false);
         LoginButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         LoginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -62,7 +63,7 @@ public class Login extends javax.swing.JFrame {
                 LoginButtonActionPerformed(evt);
             }
         });
-        bg.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 550, 300, 60));
+        Login.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 550, 300, 60));
 
         username.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         username.setForeground(new java.awt.Color(102, 102, 102));
@@ -72,7 +73,7 @@ public class Login extends javax.swing.JFrame {
                 usernameMouseClicked(evt);
             }
         });
-        bg.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 330, 300, 60));
+        Login.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 330, 300, 60));
 
         password.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         password.setForeground(new java.awt.Color(102, 102, 102));
@@ -85,13 +86,14 @@ public class Login extends javax.swing.JFrame {
                 passwordMouseClicked(evt);
             }
         });
-        bg.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 400, 300, 60));
+        Login.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 400, 300, 60));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/logo.png"))); // NOI18N
         logo.setToolTipText("");
-        bg.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, -1, -1));
+        Login.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, -1, -1));
 
         ResetPassword.setText("Reset Password");
+        ResetPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         ResetPassword.setContentAreaFilled(false);
         ResetPassword.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ResetPassword.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +101,7 @@ public class Login extends javax.swing.JFrame {
                 ResetPasswordActionPerformed(evt);
             }
         });
-        bg.add(ResetPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 620, 150, 20));
+        Login.add(ResetPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 620, 150, 20));
 
         MenuBar.setBackground(new java.awt.Color(255, 153, 0));
         MenuBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -139,7 +141,7 @@ public class Login extends javax.swing.JFrame {
         MenuBarLayout.setHorizontalGroup(
             MenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MenuBarLayout.createSequentialGroup()
-                .addContainerGap(1329, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(minimize)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,35 +157,39 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        bg.add(MenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1420, 54));
+        Login.add(MenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1420, 50));
 
-        errorResponse.setForeground(new java.awt.Color(225, 124, 24));
-        bg.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 520, 300, 20));
-
+        Coordinator.setBackground(new java.awt.Color(255, 255, 255));
         userRole.add(Coordinator);
         Coordinator.setText("Coordinator");
-        bg.add(Coordinator, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 460, -1, -1));
+        Coordinator.setBorder(null);
+        Login.add(Coordinator, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 470, -1, -1));
 
+        Administrator.setBackground(new java.awt.Color(255, 255, 255));
         userRole.add(Administrator);
         Administrator.setText("Administrator");
-        bg.add(Administrator, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 490, -1, -1));
+        Administrator.setBorder(null);
+        Login.add(Administrator, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 500, -1, -1));
+
+        errorResponse.setForeground(new java.awt.Color(255, 153, 0));
+        Login.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 520, 300, 30));
 
         bgg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bgg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/bgg.png"))); // NOI18N
         bgg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
-        bg.add(bgg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1430, 790));
+        Login.add(bgg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1430, 790));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -299,6 +305,8 @@ public class Login extends javax.swing.JFrame {
 
     private void ResetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetPasswordActionPerformed
         new ResetPassword().setVisible(true);
+        new ResetPassword().pack();
+        new ResetPassword().setLocationRelativeTo(null);
 
     }//GEN-LAST:event_ResetPasswordActionPerformed
 
@@ -364,10 +372,10 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton Administrator;
     private javax.swing.JRadioButton Coordinator;
+    private javax.swing.JPanel Login;
     private javax.swing.JButton LoginButton;
     private javax.swing.JPanel MenuBar;
     private javax.swing.JButton ResetPassword;
-    private javax.swing.JPanel bg;
     private javax.swing.JLabel bgg;
     private javax.swing.JLabel close;
     private javax.swing.JLabel errorResponse;
