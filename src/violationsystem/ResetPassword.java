@@ -294,7 +294,7 @@ public class ResetPassword extends javax.swing.JFrame {
 
             try {
                 String EmployeeID = EmpID.getText();
-                String sqlFetchID = "SELECT * FROM SYSTEMPRIMARYUSERS WHERE EmployeeID=?";
+                String sqlFetchID = "SELECT * FROM USERCRED WHERE EID=?";
                 PreparedStatement stmt = conn.prepareStatement(sqlFetchID, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 stmt.setString(1, EmployeeID);
                 ResultSet records = stmt.executeQuery();
@@ -306,7 +306,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 //add decrypt function for secret key
                 if (Key.equals(SKeyField.getText())) {
                     String encryptedPass = Security.encrypt(npass.getText());
-                    records.updateString("PASSWORD", encryptedPass);
+                    records.updateString("UPASSWORD", encryptedPass);
                     records.updateRow();
                     records.close();
                     errorResponse.setText("Password has been updated successfully");

@@ -242,7 +242,7 @@ public class Login extends javax.swing.JFrame {
             } else {
 
                 try {
-                    String LogQry = "SELECT * FROM SYSTEMPRIMARYUSERS WHERE USERNAME=?";
+                    String LogQry = "SELECT * FROM USERCRED WHERE USERNAME=?";
                     PreparedStatement stmt = conn.prepareStatement(LogQry);
                     stmt.setString(1, Username);
                     ResultSet records = stmt.executeQuery();
@@ -252,12 +252,11 @@ public class Login extends javax.swing.JFrame {
                     }
                     String RoleSelected = userRole.getSelection().getActionCommand();
                     String DBUser = records.getString("USERNAME");
-                    String DBPass = records.getString("PASSWORD");
+                    String DBPass = records.getString("UPASSWORD");
                     String decryptedPass = Security.decrypt(DBPass);
                     String DBRole = records.getString("ROLE");
-                    String DBID = records.getString("EMPLOYEEID");
+                    String DBID = records.getString("EID");
 
-                    //change values in database for adoption of foreign keys
                     Login Checker = new Login();
                     String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
 
@@ -368,7 +367,7 @@ public class Login extends javax.swing.JFrame {
                 return "Coordinator";
             } else if (Role.equals(RoleSelected) && Role.equals("Administrator")) {
                 return "Administrator";
-            } else if (Role.equals("MasterAdministrator")) {
+            } else if (Role.equals("MASTERADMIN")) {
                 return RoleSelected;
             } else {
                 return "InvalidUser";
