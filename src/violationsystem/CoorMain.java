@@ -25,21 +25,20 @@ public class CoorMain extends javax.swing.JFrame {
     int mousepX;
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
-    String getID;
-    
-    
-    public CoorMain() {
+    String EmpID = null;
 
+    public CoorMain(String DBID) {
+        
+        EmpID = DBID;
         initComponents();
 
+        //set Field Limits for Text Areas
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        EmpID = new javax.swing.JLabel();
         CoorMain = new javax.swing.JPanel();
         MenuBar = new javax.swing.JPanel();
         minimizeBtn = new javax.swing.JLabel();
@@ -75,12 +74,6 @@ public class CoorMain extends javax.swing.JFrame {
         SName = new javax.swing.JLabel();
         errorResponseV = new javax.swing.JLabel();
         bgVio = new javax.swing.JLabel();
-
-        EmpID.setEnabled(false);
-        EmpID.setFocusable(false);
-        EmpID.setInheritsPopupMenu(false);
-        EmpID.setRequestFocusEnabled(false);
-        EmpID.setVerifyInputWhenFocusTarget(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -364,16 +357,18 @@ public class CoorMain extends javax.swing.JFrame {
 
         icon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
         icon1.setText("jLabel5");
-        AddVioPanel.add(icon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 130, 170, 170));
+        AddVioPanel.add(icon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 120, 170, 170));
 
-        Violation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Item 1", "Item 2", "Item 3" }));
-        Violation.setBorder(null);
+        Violation.setBackground(new java.awt.Color(255, 255, 255));
+        Violation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Proselytizing", "Public display of affection ", "Uttering vulgar words or bad words", "Expounding or proclaiming doctrines contrary to law and morals and/or to the Mission and Vision of the University", "Unruly behavior inside the classroom, or while within the University premises", "Unless otherwise authorized for legitimate purpose, bringing gambling paraphernalia inside the campus premises", "Smoking cigarettes, cigar, electronic cigar or cigarettes, within the campus or other areas declared as prohibited zone", "Smoke-belching vehicles, or leaving the car engine on while parked inside the University premises", "Playing of car stereo with the use of bass amplifiers, boosters at high volume", "Violation of the University traffic policy", "Littering and violation of waste disposal policy", "Unauthorized use of the University logo and name", "Repeated failure to wear valid University identification card", "Repeated failure to wear the prescribed uniform, or to comply with the University’s policy on good grooming", "Simple disobedience to lawful orders of school authorities and/or their representatives", "Violation of the rules of conduct on diligence and good grooming", "Violation of the rules and regulations on the use of organization rooms", "Posting on bulletin boards, display of posters, streamers and signboards within the University premises without the approval of the Principal/Dean/Director/Regent/Secretary-General or their authorized representatives", "Other offenses analogous to the foregoing." }));
+        Violation.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Choose a Violation Category", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+        Violation.setOpaque(false);
         Violation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ViolationActionPerformed(evt);
             }
         });
-        AddVioPanel.add(Violation, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 250, -1));
+        AddVioPanel.add(Violation, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 540, 50));
 
         SComments.setColumns(20);
         SComments.setRows(5);
@@ -436,7 +431,7 @@ public class CoorMain extends javax.swing.JFrame {
     DatePanel.setNavigateFont(new java.awt.Font("Source Code Pro Light", java.awt.Font.PLAIN, 15));
     DatePanel.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_PERIOD);
     DatePanel.setVisible(false);
-    AddVioPanel.add(DatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 160, 230, 160));
+    AddVioPanel.add(DatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 230, 160));
 
     SaveVio.setForeground(new java.awt.Color(246, 245, 244));
     SaveVio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
@@ -452,7 +447,9 @@ public class CoorMain extends javax.swing.JFrame {
     });
     AddVioPanel.add(SaveVio, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 660, 150, 50));
     AddVioPanel.add(SName, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 310, 220, 30));
-    AddVioPanel.add(errorResponseV, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 250, 30));
+
+    errorResponseV.setForeground(new java.awt.Color(255, 104, 0));
+    AddVioPanel.add(errorResponseV, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 250, 30));
 
     bgVio.setBackground(new java.awt.Color(255, 186, 8));
     bgVio.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -571,16 +568,36 @@ public class CoorMain extends javax.swing.JFrame {
         Date dateUtil = datePnlSel.getTime();
         SimpleDateFormat Format = new SimpleDateFormat("MM-dd-yyyy");
         String VioDate = Format.format(dateUtil);
+        String ViolationCat = (String) Violation.getSelectedItem();
         String VioComments = SComments.getText();
         String VioRemarks = CoorRemarks.getText();
         String StudentNumber = studentNumberInp.getText();
-        
-        
-        
+
+        if (!ViolationCat.trim().isEmpty()) {
+
+//            try {
+//
+//                String InsQry = "INSERT INTO VIOLATIONINFO (VIOLATION, VIOLATIONDATE, VIOLATIONREM, VIOLATIONCOM, STUDENT) VALUES (?,?,?,?,?,?)";
+//                PreparedStatement stmt = conn.prepareStatement(InsQry);
+//                stmt.setString(1, ViolationCat);
+//                stmt.setString(2, VioDate);
+//                stmt.setString(3, VioRemarks);
+//                stmt.setString(4, VioComments);
+//                stmt.setString(5, StudentNumber);
+//                stmt.executeUpdate();
+//
+//            } catch (SQLException ex) {
+//                Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+
+        } else {
+            errorResponseV.setText("Please complete all fields");
+        }
+
     }//GEN-LAST:event_SaveVioActionPerformed
 
     private void SCommentsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SCommentsKeyReleased
-        CoorRemarks.setEnabled(true);// TODO add your handling code here:
+        CoorRemarks.setEnabled(true);
     }//GEN-LAST:event_SCommentsKeyReleased
 
     private void ViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViolationActionPerformed
@@ -590,6 +607,7 @@ public class CoorMain extends javax.swing.JFrame {
         } else {
             DatePanel.setVisible(false);
             SComments.setEnabled(false);
+            CoorRemarks.setEnabled(false);
         }
     }//GEN-LAST:event_ViolationActionPerformed
 
@@ -600,7 +618,7 @@ public class CoorMain extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CoorMain().setVisible(true);
+
             }
         });
     }
@@ -611,7 +629,6 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JPanel CoorMain;
     private javax.swing.JTextField CoorRemarks;
     private datechooser.beans.DateChooserPanel DatePanel;
-    private javax.swing.JLabel EmpID;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel MenuBar;
     private javax.swing.JTextArea SComments;

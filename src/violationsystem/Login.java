@@ -20,11 +20,16 @@ public class Login extends javax.swing.JFrame {
     int mousepX;
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
-    
+
+
     public Login() {
         System.out.println("Calling LogIn form");
         System.out.println("Calling initComponents");
         initComponents();
+
+        username.setDocument(new FieldLimit(16));
+        password.setDocument(new FieldLimit(24));
+        //initialize text limits to all fields matching the DB size
     }
 
     @SuppressWarnings("unchecked")
@@ -218,7 +223,6 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuBarMousePressed
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        CoorMain cm = new CoorMain();
         String Username = username.getText();
         String Password = password.getText();
         Coordinator.setActionCommand("Coordinator");
@@ -246,16 +250,14 @@ public class Login extends javax.swing.JFrame {
                     if (!records.next()) {
                         errorResponse.setText("Invalid Username or Password");
                     }
+                    String RoleSelected = userRole.getSelection().getActionCommand();
                     String DBUser = records.getString("USERNAME");
                     String DBPass = records.getString("PASSWORD");
                     String decryptedPass = Security.decrypt(DBPass);
                     String DBRole = records.getString("ROLE");
                     String DBID = records.getString("EMPLOYEEID");
-                    String RoleSelected = userRole.getSelection().getActionCommand();
-                    cm.getID=DBID;
-                    
-                    //change values in database for adoption of foreign keys
 
+                    //change values in database for adoption of foreign keys
                     Login Checker = new Login();
                     String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
 
@@ -264,9 +266,9 @@ public class Login extends javax.swing.JFrame {
                         case "Coordinator":
 
                             records.close();
-                            new CoorMain().setVisible(true);
-                            new CoorMain().pack();
-                            new CoorMain().setLocationRelativeTo(null);
+                            new CoorMain(DBID).setVisible(true);
+                            new CoorMain(DBID).pack();
+                            new CoorMain(DBID).setLocationRelativeTo(null);
                             this.dispose();
                             break;
 
@@ -276,7 +278,6 @@ public class Login extends javax.swing.JFrame {
                             new AdminMain().setVisible(true);
                             new AdminMain().pack();
                             new AdminMain().setLocationRelativeTo(null);
-                            records.close();
                             this.dispose();
                             break;
 
@@ -392,6 +393,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel minimize;
     private javax.swing.JPasswordField password;
     private javax.swing.ButtonGroup userRole;
-    private javax.swing.JTextField username;
+    public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }
