@@ -13,14 +13,14 @@ import java.sql.SQLException;
 
 /**
  *
- * @author Lin
+ * @author _
  */
 public class Login extends javax.swing.JFrame {
 
     int mousepX;
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
-
+    
     public Login() {
         System.out.println("Calling LogIn form");
         System.out.println("Calling initComponents");
@@ -93,7 +93,7 @@ public class Login extends javax.swing.JFrame {
         Login.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, -1, -1));
 
         ResetPassword.setText("Reset Password");
-        ResetPassword.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        ResetPassword.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.darkGray, java.awt.Color.gray));
         ResetPassword.setContentAreaFilled(false);
         ResetPassword.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ResetPassword.addActionListener(new java.awt.event.ActionListener() {
@@ -218,7 +218,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuBarMousePressed
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-
+        CoorMain cm = new CoorMain();
         String Username = username.getText();
         String Password = password.getText();
         Coordinator.setActionCommand("Coordinator");
@@ -250,7 +250,11 @@ public class Login extends javax.swing.JFrame {
                     String DBPass = records.getString("PASSWORD");
                     String decryptedPass = Security.decrypt(DBPass);
                     String DBRole = records.getString("ROLE");
+                    String DBID = records.getString("EMPLOYEEID");
                     String RoleSelected = userRole.getSelection().getActionCommand();
+                    cm.getID=DBID;
+                    
+                    //change values in database for adoption of foreign keys
 
                     Login Checker = new Login();
                     String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
@@ -259,14 +263,19 @@ public class Login extends javax.swing.JFrame {
 
                         case "Coordinator":
 
-                            new CoorMain().setVisible(true);
                             records.close();
+                            new CoorMain().setVisible(true);
+                            new CoorMain().pack();
+                            new CoorMain().setLocationRelativeTo(null);
                             this.dispose();
                             break;
 
                         case "Administrator":
 
+                            records.close();
                             new AdminMain().setVisible(true);
+                            new AdminMain().pack();
+                            new AdminMain().setLocationRelativeTo(null);
                             records.close();
                             this.dispose();
                             break;

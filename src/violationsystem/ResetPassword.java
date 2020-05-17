@@ -15,7 +15,8 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author Lin
+ * @author _
+ * 
  */
 public class ResetPassword extends javax.swing.JFrame {
 
@@ -36,7 +37,6 @@ public class ResetPassword extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bgg = new javax.swing.JLabel();
         resetPw = new javax.swing.JPanel();
         MenuBar = new javax.swing.JPanel();
         close = new javax.swing.JLabel();
@@ -54,11 +54,6 @@ public class ResetPassword extends javax.swing.JFrame {
         SKeyField = new javax.swing.JPasswordField();
         errorResponse = new javax.swing.JLabel();
         resetPwBg = new javax.swing.JLabel();
-
-        bgg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        bgg.setForeground(new java.awt.Color(51, 51, 51));
-        bgg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bgg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1420, 790));
@@ -192,7 +187,7 @@ public class ResetPassword extends javax.swing.JFrame {
         nPassLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         nPassLabel.setRequestFocusEnabled(false);
         nPassLabel.setVerifyInputWhenFocusTarget(false);
-        resetPw.add(nPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 100, 50));
+        resetPw.add(nPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, 100, 50));
 
         cPassLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         cPassLabel.setForeground(new java.awt.Color(102, 102, 102));
@@ -202,7 +197,7 @@ public class ResetPassword extends javax.swing.JFrame {
         cPassLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cPassLabel.setRequestFocusEnabled(false);
         cPassLabel.setVerifyInputWhenFocusTarget(false);
-        resetPw.add(cPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 380, 120, 50));
+        resetPw.add(cPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 120, 50));
 
         SKeyLabel.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
         SKeyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -211,7 +206,7 @@ public class ResetPassword extends javax.swing.JFrame {
         SKeyLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         SKeyLabel.setRequestFocusEnabled(false);
         SKeyLabel.setVerifyInputWhenFocusTarget(false);
-        resetPw.add(SKeyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 440, 80, 50));
+        resetPw.add(SKeyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 440, 80, 50));
 
         npass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         npass.setForeground(new java.awt.Color(102, 102, 102));
@@ -351,6 +346,8 @@ public class ResetPassword extends javax.swing.JFrame {
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
         new Login().setVisible(true);
+        new Login().pack();
+        new Login().setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_cancelActionPerformed
 
@@ -373,7 +370,7 @@ public class ResetPassword extends javax.swing.JFrame {
             cPassLabel.setText("Confirm Password");
             cpass.setText("");
             cpass.setEnabled(false);
-            SKeyLabel.setText("Secret Answer");
+            SKeyLabel.setText("Secret Key");
             SKeyField.setText("");
             SKeyField.setEnabled(false);
 
@@ -390,29 +387,30 @@ public class ResetPassword extends javax.swing.JFrame {
             cPassLabel.setText("Confirm Password");
             SKeyField.setEnabled(false);
             SKeyField.setText("");
-            SKeyLabel.setText("Secret Answer");
+            SKeyLabel.setText("Secret Key");
         }
     }//GEN-LAST:event_npassKeyReleased
 
     private void cpassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cpassKeyReleased
-        if (!npass.getText().trim().isEmpty() && !cpass.getText().trim().isEmpty()) {
+        if (!npass.getText().trim().isEmpty() && SKeyField.getText().trim().isEmpty()) {
+
+            cpass.setEnabled(true);
+            cPassLabel.setText("");
             SKeyField.setEnabled(true);
             SKeyLabel.setText("");
+
         } else {
-            cpass.setEnabled(false);
-            cpass.setText("");
-            cPassLabel.setText("Confirm Password");
             SKeyField.setEnabled(false);
             SKeyField.setText("");
-            SKeyLabel.setText("Secret Answer");
+            SKeyLabel.setText("Secret Key");
         }
     }//GEN-LAST:event_cpassKeyReleased
 
     private void SKeyFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SKeyFieldKeyReleased
-        if (cpass.getText().trim().isEmpty() || npass.getText().trim().isEmpty()) {
+        if (cpass.getText().trim().isEmpty() && npass.getText().trim().isEmpty()) {
             SKeyField.setEnabled(false);
             SKeyField.setText("");
-            SKeyLabel.setText("Secret Answer");
+            SKeyLabel.setText("Secret Key");
         }
     }//GEN-LAST:event_SKeyFieldKeyReleased
 
@@ -457,7 +455,6 @@ public class ResetPassword extends javax.swing.JFrame {
     private javax.swing.JPanel MenuBar;
     private javax.swing.JPasswordField SKeyField;
     private javax.swing.JLabel SKeyLabel;
-    private javax.swing.JLabel bgg;
     private javax.swing.JLabel cPassLabel;
     private javax.swing.JButton cancel;
     private javax.swing.JLabel close;

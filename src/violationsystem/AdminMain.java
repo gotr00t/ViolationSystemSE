@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author Lin
+ * @author _
  */
 public class AdminMain extends javax.swing.JFrame {
 

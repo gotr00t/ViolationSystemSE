@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author Lin
+ * @author _
  */
 public class ViolationSystem {
 
