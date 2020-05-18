@@ -5,6 +5,7 @@
  */
 package violationsystem;
 
+import java.awt.CardLayout;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,6 +30,7 @@ public class CoorMain extends javax.swing.JFrame {
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
     String UID = null;
+    CardLayout cardLayout;
 
     public CoorMain(String DBID) {
 
@@ -35,12 +38,14 @@ public class CoorMain extends javax.swing.JFrame {
         initComponents();
 
         //set Field Limits for Text Areas
+        cardLayout = (CardLayout) (MainPanel.getLayout());
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        sEmail = new javax.swing.JLabel();
         CoorMain = new javax.swing.JPanel();
         MenuBar = new javax.swing.JPanel();
         minimizeBtn = new javax.swing.JLabel();
@@ -76,23 +81,39 @@ public class CoorMain extends javax.swing.JFrame {
         SName = new javax.swing.JLabel();
         errorResponseV = new javax.swing.JLabel();
         bgVio = new javax.swing.JLabel();
-        resetPw = new javax.swing.JPanel();
-        MenuBar1 = new javax.swing.JPanel();
-        close = new javax.swing.JLabel();
-        minimize = new javax.swing.JLabel();
-        save = new javax.swing.JButton();
-        cancel = new javax.swing.JButton();
-        logo1 = new javax.swing.JLabel();
-        LabelEmpId = new javax.swing.JLabel();
-        EmpID = new javax.swing.JTextField();
-        nPassLabel = new javax.swing.JLabel();
-        cPassLabel = new javax.swing.JLabel();
-        SKeyLabel = new javax.swing.JLabel();
-        npass = new javax.swing.JPasswordField();
-        cpass = new javax.swing.JPasswordField();
-        SKeyField = new javax.swing.JPasswordField();
-        errorResponse1 = new javax.swing.JLabel();
-        resetPwBg = new javax.swing.JLabel();
+        managePanel = new javax.swing.JPanel();
+        manFName = new javax.swing.JTextField();
+        manMidName = new javax.swing.JTextField();
+        manLName = new javax.swing.JTextField();
+        manSNumber = new javax.swing.JTextField();
+        manStrand = new javax.swing.JTextField();
+        manEmail = new javax.swing.JTextField();
+        manSec = new javax.swing.JTextField();
+        manAdv = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        manSave = new javax.swing.JButton();
+        manPhoto = new javax.swing.JLabel();
+        manPicUpl = new javax.swing.JButton();
+        manSearch = new javax.swing.JButton();
+        manEdit = new javax.swing.JButton();
+        manGrade = new javax.swing.JTextField();
+        manBg = new javax.swing.JLabel();
+        regStudent = new javax.swing.JPanel();
+        regFName = new javax.swing.JTextField();
+        regMidName = new javax.swing.JTextField();
+        regLName = new javax.swing.JTextField();
+        regSNumber = new javax.swing.JTextField();
+        regStrand = new javax.swing.JTextField();
+        regEmail = new javax.swing.JTextField();
+        regSec = new javax.swing.JTextField();
+        regAdv = new javax.swing.JTextField();
+        regSave = new javax.swing.JButton();
+        regPhoto = new javax.swing.JLabel();
+        regPicUpl = new javax.swing.JButton();
+        AddViolation = new javax.swing.JButton();
+        regSec1 = new javax.swing.JTextField();
+        regBg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -157,8 +178,9 @@ public class CoorMain extends javax.swing.JFrame {
         SplitPane.setDividerSize(0);
 
         sidebar.setBackground(new java.awt.Color(255, 181, 8));
-        sidebar.setMinimumSize(new java.awt.Dimension(300, 860));
-        sidebar.setPreferredSize(new java.awt.Dimension(300, 860));
+        sidebar.setBorder(null);
+        sidebar.setMinimumSize(new java.awt.Dimension(300, 790));
+        sidebar.setPreferredSize(new java.awt.Dimension(300, 790));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/logosmall.png"))); // NOI18N
         logo.setToolTipText("");
@@ -200,6 +222,11 @@ public class CoorMain extends javax.swing.JFrame {
         manage.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
         manage.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
         manage.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
+        manage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageActionPerformed(evt);
+            }
+        });
 
         register.setFont(new java.awt.Font("Corbel", 1, 22)); // NOI18N
         register.setForeground(new java.awt.Color(255, 255, 255));
@@ -215,6 +242,11 @@ public class CoorMain extends javax.swing.JFrame {
         register.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
         register.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
         register.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
+        register.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerActionPerformed(evt);
+            }
+        });
 
         logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/logout.png"))); // NOI18N
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -274,9 +306,10 @@ public class CoorMain extends javax.swing.JFrame {
 
         scanPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
-        icon.setText("jLabel5");
-        scanPanel.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 170, 170));
+        icon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        scanPanel.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 240, 180));
 
         studentName.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 24)); // NOI18N
         studentName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -286,7 +319,7 @@ public class CoorMain extends javax.swing.JFrame {
         studentName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         studentName.setRequestFocusEnabled(false);
         studentName.setVerifyInputWhenFocusTarget(false);
-        scanPanel.add(studentName, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 260, 520, 40));
+        scanPanel.add(studentName, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 520, 60));
 
         studentTrack.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 20)); // NOI18N
         studentTrack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -316,7 +349,7 @@ public class CoorMain extends javax.swing.JFrame {
         errorResponse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorResponse.setBorder(null);
         errorResponse.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        scanPanel.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 340, 20));
+        scanPanel.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, 450, 50));
 
         studentNumberInp.setForeground(new java.awt.Color(102, 102, 102));
         studentNumberInp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -368,7 +401,7 @@ public class CoorMain extends javax.swing.JFrame {
         bgScan.setPreferredSize(new java.awt.Dimension(1430, 790));
         scanPanel.add(bgScan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 740));
 
-        MainPanel.add(scanPanel, "CardScan");
+        MainPanel.add(scanPanel, "scanPanel");
 
         AddVioPanel.setMinimumSize(new java.awt.Dimension(1120, 740));
         AddVioPanel.setPreferredSize(new java.awt.Dimension(1120, 740));
@@ -481,221 +514,327 @@ public class CoorMain extends javax.swing.JFrame {
     bgVio.setPreferredSize(new java.awt.Dimension(1430, 790));
     AddVioPanel.add(bgVio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 740));
 
-    MainPanel.add(AddVioPanel, "cardVio");
+    MainPanel.add(AddVioPanel, "addVioPanel");
 
-    resetPw.setBackground(new java.awt.Color(255, 255, 255));
-    resetPw.setBorder(null);
-    resetPw.setMaximumSize(new java.awt.Dimension(1420, 600));
-    resetPw.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+    managePanel.setBackground(new java.awt.Color(255, 255, 255));
+    managePanel.setBorder(null);
+    managePanel.setMinimumSize(new java.awt.Dimension(1120, 740));
+    managePanel.setPreferredSize(new java.awt.Dimension(1120, 740));
+    managePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-    MenuBar1.setBackground(new java.awt.Color(255, 153, 0));
-    MenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-    MenuBar1.setPreferredSize(new java.awt.Dimension(1000, 50));
-    MenuBar1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-        public void mouseDragged(java.awt.event.MouseEvent evt) {
-            MenuBar1MouseDragged(evt);
+    manFName.setEditable(false);
+    manFName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manFName.setForeground(new java.awt.Color(102, 102, 102));
+    manFName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manFName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "First Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manFName.setFocusable(false);
+    manFName.setPreferredSize(new java.awt.Dimension(265, 60));
+    manFName.setRequestFocusEnabled(false);
+    manFName.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manFName.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 265, 60));
+
+    manMidName.setEditable(false);
+    manMidName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manMidName.setForeground(new java.awt.Color(102, 102, 102));
+    manMidName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manMidName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Middle Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manMidName.setFocusable(false);
+    manMidName.setPreferredSize(new java.awt.Dimension(265, 60));
+    manMidName.setRequestFocusEnabled(false);
+    manMidName.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manMidName.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manMidName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 265, 60));
+
+    manLName.setEditable(false);
+    manLName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manLName.setForeground(new java.awt.Color(102, 102, 102));
+    manLName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manLName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Last Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manLName.setFocusable(false);
+    manLName.setPreferredSize(new java.awt.Dimension(265, 60));
+    manLName.setRequestFocusEnabled(false);
+    manLName.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manLName.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 20, 265, 60));
+
+    manSNumber.setEditable(false);
+    manSNumber.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manSNumber.setForeground(new java.awt.Color(102, 102, 102));
+    manSNumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manSNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Number", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manSNumber.setFocusable(false);
+    manSNumber.setPreferredSize(new java.awt.Dimension(265, 60));
+    manSNumber.setRequestFocusEnabled(false);
+    manSNumber.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manSNumber.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manSNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 265, 60));
+
+    manStrand.setEditable(false);
+    manStrand.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manStrand.setForeground(new java.awt.Color(102, 102, 102));
+    manStrand.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manStrand.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Strand", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manStrand.setFocusable(false);
+    manStrand.setPreferredSize(new java.awt.Dimension(265, 60));
+    manStrand.setRequestFocusEnabled(false);
+    manStrand.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manStrand.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manStrand, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 265, 60));
+
+    manEmail.setEditable(false);
+    manEmail.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manEmail.setForeground(new java.awt.Color(102, 102, 102));
+    manEmail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "E-mail", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manEmail.setFocusable(false);
+    manEmail.setPreferredSize(new java.awt.Dimension(265, 60));
+    manEmail.setRequestFocusEnabled(false);
+    manEmail.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manEmail.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 265, 60));
+
+    manSec.setEditable(false);
+    manSec.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manSec.setForeground(new java.awt.Color(102, 102, 102));
+    manSec.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manSec.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manSec.setFocusable(false);
+    manSec.setPreferredSize(new java.awt.Dimension(265, 60));
+    manSec.setRequestFocusEnabled(false);
+    manSec.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manSec.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manSec, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 265, 60));
+
+    manAdv.setEditable(false);
+    manAdv.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manAdv.setForeground(new java.awt.Color(102, 102, 102));
+    manAdv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manAdv.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Adviser", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manAdv.setFocusable(false);
+    manAdv.setPreferredSize(new java.awt.Dimension(265, 60));
+    manAdv.setRequestFocusEnabled(false);
+    manAdv.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manAdv.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manAdv, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 265, 60));
+
+    jTable2.setBorder(null);
+    jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null}
+        },
+        new String [] {
+            "Date", "Violation", "Remarks", "Comments"
         }
-    });
-    MenuBar1.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mousePressed(java.awt.event.MouseEvent evt) {
-            MenuBar1MousePressed(evt);
-        }
-    });
+    ));
+    jTable2.setFocusable(false);
+    jTable2.setRowHeight(23);
+    jScrollPane2.setViewportView(jTable2);
 
-    close.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 28)); // NOI18N
-    close.setForeground(new java.awt.Color(255, 255, 255));
-    close.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    close.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/exit.png"))); // NOI18N
-    close.setBorder(null);
-    close.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    close.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            closeMouseClicked(evt);
-        }
-    });
+    managePanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 234, 1078, 420));
 
-    minimize.setFont(new java.awt.Font("Britannic Bold", 1, 34)); // NOI18N
-    minimize.setForeground(new java.awt.Color(255, 255, 255));
-    minimize.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    minimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/minimize.png"))); // NOI18N
-    minimize.setBorder(null);
-    minimize.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    minimize.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            minimizeMouseClicked(evt);
-        }
-    });
+    manSave.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+    manSave.setForeground(new java.awt.Color(255, 255, 255));
+    manSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+    manSave.setText("Save");
+    manSave.setBorder(null);
+    manSave.setBorderPainted(false);
+    manSave.setContentAreaFilled(false);
+    manSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    managePanel.add(manSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 660, 170, 70));
 
-    javax.swing.GroupLayout MenuBar1Layout = new javax.swing.GroupLayout(MenuBar1);
-    MenuBar1.setLayout(MenuBar1Layout);
-    MenuBar1Layout.setHorizontalGroup(
-        MenuBar1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(MenuBar1Layout.createSequentialGroup()
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(minimize)
-            .addGap(18, 18, 18)
-            .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap())
-    );
-    MenuBar1Layout.setVerticalGroup(
-        MenuBar1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(MenuBar1Layout.createSequentialGroup()
-            .addContainerGap()
-            .addGroup(MenuBar1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(close)
-                .addComponent(minimize))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-    );
+    manPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
+    manPhoto.setBorder(null);
+    manPhoto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    managePanel.add(manPhoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 20, -1, 159));
 
-    resetPw.add(MenuBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 1000, -1));
+    manPicUpl.setText("Upload");
+    managePanel.add(manPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 180, 90, -1));
 
-    save.setBackground(new java.awt.Color(255, 255, 255));
-    save.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-    save.setForeground(new java.awt.Color(255, 255, 255));
-    save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/button2.png"))); // NOI18N
-    save.setText("Save");
-    save.setBorder(null);
-    save.setContentAreaFilled(false);
-    save.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    save.setPreferredSize(new java.awt.Dimension(147, 51));
-    save.addActionListener(new java.awt.event.ActionListener() {
+    manSearch.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+    manSearch.setForeground(new java.awt.Color(255, 255, 255));
+    manSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+    manSearch.setText("Search");
+    manSearch.setBorder(null);
+    manSearch.setBorderPainted(false);
+    manSearch.setContentAreaFilled(false);
+    manSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    manSearch.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            saveActionPerformed(evt);
+            manSearchActionPerformed(evt);
         }
     });
-    resetPw.add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 500, 200, 50));
+    managePanel.add(manSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 660, 170, 70));
 
-    cancel.setBackground(new java.awt.Color(255, 255, 255));
-    cancel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-    cancel.setForeground(new java.awt.Color(255, 255, 255));
-    cancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/button2.png"))); // NOI18N
-    cancel.setText("Cancel");
-    cancel.setBorder(null);
-    cancel.setContentAreaFilled(false);
-    cancel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    cancel.setPreferredSize(new java.awt.Dimension(147, 51));
-    cancel.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            cancelActionPerformed(evt);
-        }
-    });
-    resetPw.add(cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 500, 200, 50));
+    manEdit.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+    manEdit.setForeground(new java.awt.Color(255, 255, 255));
+    manEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+    manEdit.setText("Edit");
+    manEdit.setBorder(null);
+    manEdit.setBorderPainted(false);
+    manEdit.setContentAreaFilled(false);
+    manEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    managePanel.add(manEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(757, 660, 170, 70));
 
-    logo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    logo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/logo.png"))); // NOI18N
-    logo1.setToolTipText("");
-    logo1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    resetPw.add(logo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, -1, -1));
+    manGrade.setEditable(false);
+    manGrade.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    manGrade.setForeground(new java.awt.Color(102, 102, 102));
+    manGrade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    manGrade.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    manGrade.setFocusable(false);
+    manGrade.setPreferredSize(new java.awt.Dimension(265, 60));
+    manGrade.setRequestFocusEnabled(false);
+    manGrade.setSelectionColor(new java.awt.Color(255, 255, 255));
+    manGrade.setVerifyInputWhenFocusTarget(false);
+    managePanel.add(manGrade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 265, 60));
 
-    LabelEmpId.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-    LabelEmpId.setForeground(new java.awt.Color(51, 51, 51));
-    LabelEmpId.setText("To reset password, please enter your Employee ID:  ");
-    resetPw.add(LabelEmpId, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, -1, -1));
+    manBg.setBackground(new java.awt.Color(255, 186, 8));
+    manBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+    manBg.setForeground(new java.awt.Color(51, 51, 51));
+    manBg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    manBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/bgg.png"))); // NOI18N
+    manBg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+    manBg.setMaximumSize(new java.awt.Dimension(1430, 790));
+    manBg.setMinimumSize(new java.awt.Dimension(1430, 790));
+    manBg.setPreferredSize(new java.awt.Dimension(1430, 790));
+    managePanel.add(manBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 740));
 
-    EmpID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-    EmpID.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyReleased(java.awt.event.KeyEvent evt) {
-            EmpIDKeyReleased(evt);
-        }
-    });
-    resetPw.add(EmpID, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 260, 260, 30));
+    MainPanel.add(managePanel, "managePanel");
 
-    nPassLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-    nPassLabel.setForeground(new java.awt.Color(102, 102, 102));
-    nPassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    nPassLabel.setText("New Password");
-    nPassLabel.setBorder(null);
-    nPassLabel.setFocusable(false);
-    nPassLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    nPassLabel.setRequestFocusEnabled(false);
-    nPassLabel.setVerifyInputWhenFocusTarget(false);
-    resetPw.add(nPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, 100, 50));
+    regStudent.setBackground(new java.awt.Color(255, 255, 255));
+    regStudent.setBorder(null);
+    regStudent.setMinimumSize(new java.awt.Dimension(1120, 740));
+    regStudent.setPreferredSize(new java.awt.Dimension(1120, 740));
+    regStudent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-    cPassLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-    cPassLabel.setForeground(new java.awt.Color(102, 102, 102));
-    cPassLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    cPassLabel.setText("Confirm Password");
-    cPassLabel.setFocusable(false);
-    cPassLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    cPassLabel.setRequestFocusEnabled(false);
-    cPassLabel.setVerifyInputWhenFocusTarget(false);
-    resetPw.add(cPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 120, 50));
+    regFName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regFName.setForeground(new java.awt.Color(102, 102, 102));
+    regFName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regFName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "First Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regFName.setMinimumSize(new java.awt.Dimension(265, 60));
+    regFName.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 310, 265, 60));
 
-    SKeyLabel.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
-    SKeyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    SKeyLabel.setText("Secret Key");
-    SKeyLabel.setFocusable(false);
-    SKeyLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    SKeyLabel.setRequestFocusEnabled(false);
-    SKeyLabel.setVerifyInputWhenFocusTarget(false);
-    resetPw.add(SKeyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 440, 80, 50));
+    regMidName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regMidName.setForeground(new java.awt.Color(102, 102, 102));
+    regMidName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regMidName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Middle Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regMidName.setMinimumSize(new java.awt.Dimension(265, 60));
+    regMidName.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regMidName, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 265, 60));
 
-    npass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-    npass.setForeground(new java.awt.Color(102, 102, 102));
-    npass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-    npass.setToolTipText("");
-    npass.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    npass.setCaretColor(new java.awt.Color(102, 102, 102));
-    npass.setEnabled(false);
-    npass.setName(""); // NOI18N
-    npass.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            npassMouseClicked(evt);
-        }
-    });
-    npass.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyReleased(java.awt.event.KeyEvent evt) {
-            npassKeyReleased(evt);
-        }
-    });
-    resetPw.add(npass, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, 300, 50));
+    regLName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regLName.setForeground(new java.awt.Color(102, 102, 102));
+    regLName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regLName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Last Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regLName.setMinimumSize(new java.awt.Dimension(265, 60));
+    regLName.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 310, 265, 60));
 
-    cpass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-    cpass.setForeground(new java.awt.Color(102, 102, 102));
-    cpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-    cpass.setToolTipText("");
-    cpass.setAutoscrolls(false);
-    cpass.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    cpass.setCaretColor(new java.awt.Color(102, 102, 102));
-    cpass.setEnabled(false);
-    cpass.setName(""); // NOI18N
-    cpass.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            cpassMouseClicked(evt);
-        }
-    });
-    cpass.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyReleased(java.awt.event.KeyEvent evt) {
-            cpassKeyReleased(evt);
-        }
-    });
-    resetPw.add(cpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 380, 300, 50));
+    regSNumber.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regSNumber.setForeground(new java.awt.Color(102, 102, 102));
+    regSNumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regSNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Number", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regSNumber.setMinimumSize(new java.awt.Dimension(265, 60));
+    regSNumber.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regSNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 265, 60));
 
-    SKeyField.setForeground(new java.awt.Color(102, 102, 102));
-    SKeyField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-    SKeyField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    SKeyField.setCaretColor(new java.awt.Color(102, 102, 102));
-    SKeyField.setEnabled(false);
-    SKeyField.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyReleased(java.awt.event.KeyEvent evt) {
-            SKeyFieldKeyReleased(evt);
-        }
-    });
-    resetPw.add(SKeyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 440, 300, 50));
+    regStrand.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regStrand.setForeground(new java.awt.Color(102, 102, 102));
+    regStrand.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regStrand.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Strand", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regStrand.setMinimumSize(new java.awt.Dimension(265, 60));
+    regStrand.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regStrand, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 450, 265, 60));
 
-    errorResponse1.setForeground(new java.awt.Color(255, 153, 0));
-    resetPw.add(errorResponse1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 290, 300, 30));
+    regEmail.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regEmail.setForeground(new java.awt.Color(102, 102, 102));
+    regEmail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "E-mail", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regEmail.setMinimumSize(new java.awt.Dimension(265, 60));
+    regEmail.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 380, 265, 60));
 
-    resetPwBg.setBackground(new java.awt.Color(255, 255, 255));
-    resetPwBg.setForeground(new java.awt.Color(1, 1, 1));
-    resetPwBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/bgmini.PNG"))); // NOI18N
-    resetPwBg.setBorder(null);
-    resetPwBg.setMaximumSize(new java.awt.Dimension(1000, 600));
-    resetPwBg.setMinimumSize(new java.awt.Dimension(1000, 600));
-    resetPwBg.setPreferredSize(new java.awt.Dimension(1000, 600));
-    resetPw.add(resetPwBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, -1));
+    regSec.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regSec.setForeground(new java.awt.Color(102, 102, 102));
+    regSec.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regSec.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regSec.setMinimumSize(new java.awt.Dimension(265, 60));
+    regSec.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regSec, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 380, 265, 60));
 
-    MainPanel.add(resetPw, "card4");
+    regAdv.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regAdv.setForeground(new java.awt.Color(102, 102, 102));
+    regAdv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regAdv.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Adviser", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regAdv.setMinimumSize(new java.awt.Dimension(265, 60));
+    regAdv.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regAdv, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 450, 265, 60));
+
+    regSave.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+    regSave.setForeground(new java.awt.Color(255, 255, 255));
+    regSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+    regSave.setText("Save");
+    regSave.setBorder(null);
+    regSave.setBorderPainted(false);
+    regSave.setContentAreaFilled(false);
+    regSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    regStudent.add(regSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, -1, -1));
+
+    regPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
+    regPhoto.setBorder(null);
+    regPhoto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    regStudent.add(regPhoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 170, 159));
+
+    regPicUpl.setText("Upload Photo");
+    regStudent.add(regPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 130, -1));
+
+    AddViolation.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+    AddViolation.setForeground(new java.awt.Color(255, 255, 255));
+    AddViolation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+    AddViolation.setText("Add Violation");
+    AddViolation.setBorder(null);
+    AddViolation.setBorderPainted(false);
+    AddViolation.setContentAreaFilled(false);
+    AddViolation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    regStudent.add(AddViolation, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 540, -1, -1));
+
+    regSec1.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regSec1.setForeground(new java.awt.Color(102, 102, 102));
+    regSec1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regSec1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regSec1.setMinimumSize(new java.awt.Dimension(265, 60));
+    regSec1.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regSec1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, 265, 60));
+
+    regBg.setBackground(new java.awt.Color(255, 186, 8));
+    regBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+    regBg.setForeground(new java.awt.Color(51, 51, 51));
+    regBg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    regBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/bgg.png"))); // NOI18N
+    regBg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+    regBg.setMaximumSize(new java.awt.Dimension(1430, 790));
+    regBg.setMinimumSize(new java.awt.Dimension(1430, 790));
+    regBg.setPreferredSize(new java.awt.Dimension(1430, 790));
+    regStudent.add(regBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 740));
+
+    MainPanel.add(regStudent, "regPanel");
 
     SplitPane.setRightComponent(MainPanel);
 
@@ -737,28 +876,29 @@ public class CoorMain extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuBarMousePressed
 
     private void ViewInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewInfoActionPerformed
-        String StudentNumber = studentNumberInp.getText();
-        String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
 
         if (conn != null) {
+            String StudentNumber = studentNumberInp.getText();
+            String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
+
             if (!StudentNumber.trim().isEmpty()) {
                 try {
                     PreparedStatement stmt = conn.prepareStatement(SQLFind);
                     stmt.setString(1, StudentNumber);
                     ResultSet records = stmt.executeQuery();
                     if (!records.next()) {
-                        errorResponse.setText("Student not found");
-                        //prompt of a student registration on the system
+                        errorResponse.setText("<html> Student ID not found on records <br/> &nbsp;&nbsp;&nbsp; Please proceed to register<html>");
                         records.close();
                     } else {
                         String SFName = records.getString("SFIRSTNAME");
                         String SMName = records.getString("SMIDNAME");
                         String SLName = records.getString("SLASTNAME");
-                        String SYear = records.getString("SYEAR");
+                        String Sgrade = records.getString("SGRADE");
                         String SSec = records.getString("SSEC");
                         String STrack = records.getString("STRACK");
+                        sEmail.setText(records.getString("SEMAIL"));
                         studentName.setText(SFName + " " + SMName + " " + SLName);
-                        studentSection.setText(SYear + " " + "Year" + " " + "-" + " " + STrack + SSec);
+                        studentSection.setText("GRADE" + " " + Sgrade + "-" + STrack + "-" + SSec);
                         studentTrack.setText(STrack);
                         records.close();
                     }
@@ -775,8 +915,7 @@ public class CoorMain extends javax.swing.JFrame {
     private void AddVioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddVioActionPerformed
 
         if (!studentNumberInp.getText().trim().isEmpty()) {
-            scanPanel.setVisible(false);
-            AddVioPanel.setVisible(true);
+            cardLayout.show(MainPanel, "addVioPanel");
         } else {
             errorResponse.setText("Please Enter a Student Number");
         }
@@ -792,8 +931,7 @@ public class CoorMain extends javax.swing.JFrame {
     }//GEN-LAST:event_closeBtnMouseClicked
 
     private void searchStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchStudentActionPerformed
-        AddVioPanel.setVisible(false);
-        scanPanel.setVisible(true);// TODO add your handling code here:
+        cardLayout.show(MainPanel, "scanPanel");
     }//GEN-LAST:event_searchStudentActionPerformed
 
     private void SaveVioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveVioActionPerformed
@@ -807,12 +945,13 @@ public class CoorMain extends javax.swing.JFrame {
         String vCom = SComments.getText();
         String vRem = CoorRemarks.getText();
         String sNumber = studentNumberInp.getText();
-
+        String stEmail = sEmail.getText();
+        
         if (!vCat.trim().isEmpty() && !vCom.trim().isEmpty() & !vRem.trim().isEmpty()) {
 
             try {
 
-                String InsQry = "INSERT INTO VIOLATIONINFO VALUES (default,?,?,?,?,?,?,?)";
+                String InsQry = "INSERT INTO VIOLATIONINFO VALUES (default,?,?,?,?,?,?,?,?)";
                 PreparedStatement stmt = conn.prepareStatement(InsQry);
                 stmt.setString(1, vCat);
                 stmt.setString(2, vDate);
@@ -821,10 +960,10 @@ public class CoorMain extends javax.swing.JFrame {
                 stmt.setString(5, vRem);
                 stmt.setString(6, sNumber);
                 stmt.setString(7, UID);
+                stmt.setString(8, stEmail);
                 stmt.executeUpdate();
                 stmt.close();
                 errorResponseV.setText("Records has been update");
-                
 
             } catch (SQLException ex) {
                 Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -851,130 +990,60 @@ public class CoorMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ViolationActionPerformed
 
-    private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_closeMouseClicked
+    private void manageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageActionPerformed
+        cardLayout.show(MainPanel, "managePanel");
+    }//GEN-LAST:event_manageActionPerformed
 
-    private void minimizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeMouseClicked
-        this.setState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_minimizeMouseClicked
+    private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
+        cardLayout.show(MainPanel, "regPanel");
+    }//GEN-LAST:event_registerActionPerformed
 
-    private void MenuBar1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuBar1MouseDragged
-        int coorX = evt.getXOnScreen();
-        int coorY = evt.getYOnScreen();
+    private void manSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manSearchActionPerformed
 
-        this.setLocation(coorX - mousepX, coorY - mousepY);
-    }//GEN-LAST:event_MenuBar1MouseDragged
+        String searchStn = JOptionPane.showInputDialog("Please input a student number: ");
+        
+        if (conn != null) {
 
-    private void MenuBar1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuBar1MousePressed
-        mousepX = evt.getX();
-        mousepY = evt.getY();
-    }//GEN-LAST:event_MenuBar1MousePressed
-
-    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-
-        if (npass.getText().equals(cpass.getText())) {
-
-            try {
-                String EmployeeID = EmpID.getText();
-                String sqlFetchID = "SELECT * FROM USERCRED WHERE EID=?";
-                PreparedStatement stmt = conn.prepareStatement(sqlFetchID, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                stmt.setString(1, EmployeeID);
-                ResultSet records = stmt.executeQuery();
-
-                if (!records.next()) {
-                    errorResponse.setText("Employee not found");
+            String SQLrecords = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
+            
+            if (!searchStn.trim().isEmpty()) {
+                try {
+                    PreparedStatement stmt = conn.prepareStatement(SQLrecords);
+                    stmt.setString(1, searchStn);
+                    ResultSet records = stmt.executeQuery();
+                    if (!records.next()) {
+                        JOptionPane.showMessageDialog(null, "Student not on records");
+                        records.close();
+                    } else {
+                        String SFName = records.getString("SFIRSTNAME");
+                        String SMName = records.getString("SMIDNAME");
+                        String SLName = records.getString("SLASTNAME");
+                        String SNum = records.getString("STUDENTID");
+                        String sGrade = records.getString("SGRADE");
+                        String sSec = records.getString("SSEC");
+                        String sTrack = records.getString("STRACK");
+                        String sEmail = records.getString("SEMAIL");
+                        String sAdv = records.getString("SADVISER");
+                        manFName.setText(SFName);
+                        manMidName.setText(SMName);
+                        manLName.setText(SLName);
+                        manSNumber.setText(SNum);
+                        manGrade.setText(sGrade);
+                        manSec.setText(sSec);
+                        manStrand.setText(sTrack);
+                        manEmail.setText(sEmail);
+                        manAdv.setText(sAdv);
+                        records.close();
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                String Key = records.getString("SECRETANSWER");
-                //add decrypt function for secret key
-                if (Key.equals(SKeyField.getText())) {
-                    String encryptedPass = Security.encrypt(npass.getText());
-                    records.updateString("UPASSWORD", encryptedPass);
-                    records.updateRow();
-                    records.close();
-                    errorResponse.setText("Password has been updated successfully");
-                } else {
-                    errorResponse.setText("Invalid Key");
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(ResetPassword.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            errorResponse.setText("Password Mismatch");
+            else{
+                JOptionPane.showMessageDialog(null, "Search input is empty");
+            }
         }
-
-    }//GEN-LAST:event_saveActionPerformed
-
-    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
-        new Login().setVisible(true);
-        new Login().pack();
-        new Login().setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_cancelActionPerformed
-
-    private void EmpIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EmpIDKeyReleased
-        if (!EmpID.getText().trim().isEmpty()) {
-            npass.setEnabled(true);
-            nPassLabel.setText("");
-        } else {
-            nPassLabel.setText("New Password");
-            npass.setText("");
-            npass.setEnabled(false);
-            cPassLabel.setText("Confirm Password");
-            cpass.setText("");
-            cpass.setEnabled(false);
-            SKeyLabel.setText("Secret Key");
-            SKeyField.setText("");
-            SKeyField.setEnabled(false);
-
-        }
-    }//GEN-LAST:event_EmpIDKeyReleased
-
-    private void npassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_npassMouseClicked
-        errorResponse.setText("");
-    }//GEN-LAST:event_npassMouseClicked
-
-    private void npassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_npassKeyReleased
-        if (!EmpID.getText().trim().isEmpty() && !npass.getText().trim().isEmpty()) {
-            cpass.setEnabled(true);
-            cPassLabel.setText("");
-        } else {
-            cpass.setEnabled(false);
-            cpass.setText("");
-            cPassLabel.setText("Confirm Password");
-            SKeyField.setEnabled(false);
-            SKeyField.setText("");
-            SKeyLabel.setText("Secret Key");
-        }
-    }//GEN-LAST:event_npassKeyReleased
-
-    private void cpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cpassMouseClicked
-        errorResponse.setText("");
-    }//GEN-LAST:event_cpassMouseClicked
-
-    private void cpassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cpassKeyReleased
-        if (!npass.getText().trim().isEmpty() && SKeyField.getText().trim().isEmpty()) {
-
-            cpass.setEnabled(true);
-            cPassLabel.setText("");
-            SKeyField.setEnabled(true);
-            SKeyLabel.setText("");
-
-        } else {
-            SKeyField.setEnabled(false);
-            SKeyField.setText("");
-            SKeyLabel.setText("Secret Key");
-        }
-    }//GEN-LAST:event_cpassKeyReleased
-
-    private void SKeyFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SKeyFieldKeyReleased
-        if (cpass.getText().trim().isEmpty() && npass.getText().trim().isEmpty()) {
-            SKeyField.setEnabled(false);
-            SKeyField.setText("");
-            SKeyLabel.setText("Secret Key");
-        }
-    }//GEN-LAST:event_SKeyFieldKeyReleased
+    }//GEN-LAST:event_manSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -985,23 +1054,20 @@ public class CoorMain extends javax.swing.JFrame {
             public void run() {
 
             }
+
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddVio;
     private javax.swing.JPanel AddVioPanel;
+    private javax.swing.JButton AddViolation;
     private javax.swing.JPanel CoorMain;
     private javax.swing.JTextField CoorRemarks;
     private datechooser.beans.DateChooserPanel DatePanel;
-    private javax.swing.JTextField EmpID;
-    private javax.swing.JLabel LabelEmpId;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel MenuBar;
-    private javax.swing.JPanel MenuBar1;
     private javax.swing.JTextArea SComments;
-    private javax.swing.JPasswordField SKeyField;
-    private javax.swing.JLabel SKeyLabel;
     private javax.swing.JLabel SName;
     private javax.swing.JButton SaveVio;
     private javax.swing.JSplitPane SplitPane;
@@ -1009,29 +1075,50 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JComboBox Violation;
     private javax.swing.JLabel bgScan;
     private javax.swing.JLabel bgVio;
-    private javax.swing.JLabel cPassLabel;
-    private javax.swing.JButton cancel;
-    private javax.swing.JLabel close;
     private javax.swing.JLabel closeBtn;
-    private javax.swing.JPasswordField cpass;
     private javax.swing.JLabel errorResponse;
-    private javax.swing.JLabel errorResponse1;
     private javax.swing.JLabel errorResponseV;
     private javax.swing.JLabel generate;
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel logo;
-    private javax.swing.JLabel logo1;
     private javax.swing.JLabel logout;
+    private javax.swing.JTextField manAdv;
+    private javax.swing.JLabel manBg;
+    private javax.swing.JButton manEdit;
+    private javax.swing.JTextField manEmail;
+    private javax.swing.JTextField manFName;
+    private javax.swing.JTextField manGrade;
+    private javax.swing.JTextField manLName;
+    private javax.swing.JTextField manMidName;
+    private javax.swing.JLabel manPhoto;
+    private javax.swing.JButton manPicUpl;
+    private javax.swing.JTextField manSNumber;
+    private javax.swing.JButton manSave;
+    private javax.swing.JButton manSearch;
+    private javax.swing.JTextField manSec;
+    private javax.swing.JTextField manStrand;
     private javax.swing.JButton manage;
-    private javax.swing.JLabel minimize;
+    private javax.swing.JPanel managePanel;
     private javax.swing.JLabel minimizeBtn;
-    private javax.swing.JLabel nPassLabel;
-    private javax.swing.JPasswordField npass;
+    private javax.swing.JTextField regAdv;
+    private javax.swing.JLabel regBg;
+    private javax.swing.JTextField regEmail;
+    private javax.swing.JTextField regFName;
+    private javax.swing.JTextField regLName;
+    private javax.swing.JTextField regMidName;
+    private javax.swing.JLabel regPhoto;
+    private javax.swing.JButton regPicUpl;
+    private javax.swing.JTextField regSNumber;
+    private javax.swing.JButton regSave;
+    private javax.swing.JTextField regSec;
+    private javax.swing.JTextField regSec1;
+    private javax.swing.JTextField regStrand;
+    private javax.swing.JPanel regStudent;
     private javax.swing.JButton register;
-    private javax.swing.JPanel resetPw;
-    private javax.swing.JLabel resetPwBg;
-    private javax.swing.JButton save;
+    private javax.swing.JLabel sEmail;
     private javax.swing.JPanel scanPanel;
     private javax.swing.JButton searchStudent;
     private javax.swing.JPanel sidebar;

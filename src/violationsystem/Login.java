@@ -21,7 +21,6 @@ public class Login extends javax.swing.JFrame {
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
 
-
     public Login() {
         System.out.println("Calling LogIn form");
         System.out.println("Calling initComponents");
@@ -242,6 +241,8 @@ public class Login extends javax.swing.JFrame {
             } else {
 
                 try {
+
+                    //check logic on login, produces SQLexception error, calls the records twice.
                     String LogQry = "SELECT * FROM USERCRED WHERE USERNAME=?";
                     PreparedStatement stmt = conn.prepareStatement(LogQry);
                     stmt.setString(1, Username);
@@ -249,48 +250,49 @@ public class Login extends javax.swing.JFrame {
 
                     if (!records.next()) {
                         errorResponse.setText("Invalid Username or Password");
-                    }
-                    String RoleSelected = userRole.getSelection().getActionCommand();
-                    String DBUser = records.getString("USERNAME");
-                    String DBPass = records.getString("UPASSWORD");
-                    String decryptedPass = Security.decrypt(DBPass);
-                    String DBRole = records.getString("ROLE");
-                    String DBID = records.getString("EID");
+                    } else {
+                        String RoleSelected = userRole.getSelection().getActionCommand();
+                        String DBUser = records.getString("USERNAME");
+                        String DBPass = records.getString("UPASSWORD");
+                        String decryptedPass = Security.decrypt(DBPass);
+                        String DBRole = records.getString("ROLE");
+                        String DBID = records.getString("EID");
 
-                    Login Checker = new Login();
-                    String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
+                        Login Checker = new Login();
+                        String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
 
-                    switch (valResult) {
+                        switch (valResult) {
 
-                        case "Coordinator":
+                            case "Coordinator":
 
-                            records.close();
-                            new CoorMain(DBID).setVisible(true);
-                            new CoorMain(DBID).pack();
-                            new CoorMain(DBID).setLocationRelativeTo(null);
-                            this.dispose();
-                            break;
+                                records.close();
+                                new CoorMain(DBID).setVisible(true);
+                                new CoorMain(DBID).pack();
+                                new CoorMain(DBID).setLocationRelativeTo(null);
+                                this.dispose();
+                                break;
 
-                        case "Administrator":
+                            case "Administrator":
 
-                            records.close();
-                            new AdminMain().setVisible(true);
-                            new AdminMain().pack();
-                            new AdminMain().setLocationRelativeTo(null);
-                            this.dispose();
-                            break;
+                                records.close();
+                                new AdminMain().setVisible(true);
+                                new AdminMain().pack();
+                                new AdminMain().setLocationRelativeTo(null);
+                                this.dispose();
+                                break;
 
-                        case "InvalidUser":
+                            case "InvalidUser":
 
-                            errorResponse.setText("Invalid Role Selected");
-                            records.close();
-                            break;
+                                errorResponse.setText("Invalid Role Selected");
+                                records.close();
+                                break;
 
-                        case "InvalidCredentials":
+                            case "InvalidCredentials":
 
-                            errorResponse.setText("Incorrect Username or Password");
-                            records.close();
-                            break;
+                                errorResponse.setText("Incorrect Username or Password");
+                                records.close();
+                                break;
+                        }
                     }
                 } catch (NullPointerException e) {
                     errorResponse.setText("Please choose your assigned role");
