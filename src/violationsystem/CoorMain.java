@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -193,6 +194,7 @@ public class CoorMain extends javax.swing.JFrame {
         searchStudent.setForeground(new java.awt.Color(255, 255, 255));
         searchStudent.setText("Search Student");
         searchStudent.setAlignmentY(0.0F);
+        searchStudent.setBorder(null);
         searchStudent.setBorderPainted(false);
         searchStudent.setContentAreaFilled(false);
         searchStudent.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -214,6 +216,7 @@ public class CoorMain extends javax.swing.JFrame {
         manage.setForeground(new java.awt.Color(255, 255, 255));
         manage.setText("Manage Data");
         manage.setAlignmentY(0.0F);
+        manage.setBorder(null);
         manage.setContentAreaFilled(false);
         manage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         manage.setIconTextGap(0);
@@ -233,6 +236,7 @@ public class CoorMain extends javax.swing.JFrame {
         register.setForeground(new java.awt.Color(255, 255, 255));
         register.setText("Register");
         register.setAlignmentY(0.0F);
+        register.setBorder(null);
         register.setContentAreaFilled(false);
         register.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         register.setIconTextGap(0);
@@ -617,6 +621,7 @@ public class CoorMain extends javax.swing.JFrame {
             return canEdit [columnIndex];
         }
     });
+    vioTableData.setEnabled(false);
     vioTableData.setFocusable(false);
     vioTableData.setRowHeight(20);
     jScrollPane2.setViewportView(vioTableData);
@@ -1031,7 +1036,7 @@ public class CoorMain extends javax.swing.JFrame {
             DefaultTableModel vioTable = (DefaultTableModel) vioTableData.getModel();
             Object[] addData = new Object[4];
             vioTable.setRowCount(0);
-            
+
             if (!searchStn.trim().isEmpty()) {
                 try {
                     PreparedStatement stmt3 = conn.prepareStatement(SQLrecords);
@@ -1207,22 +1212,40 @@ public class CoorMain extends javax.swing.JFrame {
             if (!manSNumber.getText().trim().isEmpty()) {
                 try {
                     String SQLUpdate = "UPDATE STUDENTDATA SET STUDENTID = ?, SFIRSTNAME=?, SMIDNAME=?, SLASTNAME=?, SGRADE=?, SSEC=?, STRACK=?, SEMAIL=?, SADVISER=? WHERE STUDENTID=?";
+                    String SQLUpdate2 = "UPDATE VIOLATIONINFO SET ,,,,";
                     String StudNum = manSNumber.getText();
                     int SNumber = Integer.parseInt(StudNum);
 
-                    PreparedStatement stmt1 = conn.prepareStatement(SQLUpdate);
-                    stmt1.setInt(1, SNumber);
-                    stmt1.setString(2, manFName.getText());
-                    stmt1.setString(3, manMidName.getText());
-                    stmt1.setString(4, manLName.getText());
-                    stmt1.setString(5, manGrade.getText());
-                    stmt1.setString(6, manSec.getText());
-                    stmt1.setString(7, manStrand.getText());
-                    stmt1.setString(8, manEmail.getText());
-                    stmt1.setString(9, manAdv.getText());
-                    stmt1.setInt(10, SNumber);
-                    stmt1.executeUpdate();
+                    PreparedStatement stmt2 = conn.prepareStatement(SQLUpdate);
+                    stmt2.setInt(1, SNumber);
+                    stmt2.setString(2, manFName.getText());
+                    stmt2.setString(3, manMidName.getText());
+                    stmt2.setString(4, manLName.getText());
+                    stmt2.setString(5, manGrade.getText());
+                    stmt2.setString(6, manSec.getText());
+                    stmt2.setString(7, manStrand.getText());
+                    stmt2.setString(8, manEmail.getText());
+                    stmt2.setString(9, manAdv.getText());
+                    stmt2.setInt(10, SNumber);
+                    stmt2.executeUpdate();
+                    stmt2.close();
 
+                    try {
+                        String lDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+                        String lTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+                        String SQLTrack = "INSERT INTO DATACHANGELOGGER VALUES (?,?,?,null,?,?)";
+                        PreparedStatement stmt4 = conn.prepareStatement(SQLTrack);
+                        stmt4.setInt(1,SNumber);
+                        stmt4.setString(3, UID);
+                        stmt4.setString(5, lDate);
+                        stmt4.setString(6, lTime);
+                        stmt4.executeUpdate();
+                        stmt4.close();
+                        
+                    }catch (SQLException e){
+                        Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, e);
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
