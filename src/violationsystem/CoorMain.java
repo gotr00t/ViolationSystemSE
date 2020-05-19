@@ -15,10 +15,12 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -91,7 +93,7 @@ public class CoorMain extends javax.swing.JFrame {
         manSec = new javax.swing.JTextField();
         manAdv = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        vioTableData = new javax.swing.JTable();
         manSave = new javax.swing.JButton();
         manPhoto = new javax.swing.JLabel();
         manPicUpl = new javax.swing.JButton();
@@ -618,34 +620,26 @@ public class CoorMain extends javax.swing.JFrame {
     manAdv.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manAdv, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 265, 60));
 
-    jTable2.setBorder(null);
-    jTable2.setModel(new javax.swing.table.DefaultTableModel(
+    vioTableData.setBorder(null);
+    vioTableData.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null}
+
         },
         new String [] {
             "Date", "Violation", "Remarks", "Comments"
         }
-    ));
-    jTable2.setFocusable(false);
-    jTable2.setRowHeight(23);
-    jScrollPane2.setViewportView(jTable2);
+    ) {
+        boolean[] canEdit = new boolean [] {
+            false, false, false, false
+        };
+
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
+    });
+    vioTableData.setFocusable(false);
+    vioTableData.setRowHeight(20);
+    jScrollPane2.setViewportView(vioTableData);
 
     managePanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 234, 1078, 420));
 
@@ -665,7 +659,7 @@ public class CoorMain extends javax.swing.JFrame {
     managePanel.add(manPhoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 20, -1, 159));
 
     manPicUpl.setText("Upload");
-    managePanel.add(manPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 180, 90, -1));
+    managePanel.add(manPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 180, 90, -1));
 
     manSearch.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
     manSearch.setForeground(new java.awt.Color(255, 255, 255));
@@ -690,7 +684,7 @@ public class CoorMain extends javax.swing.JFrame {
     manEdit.setBorderPainted(false);
     manEdit.setContentAreaFilled(false);
     manEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    managePanel.add(manEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(757, 660, 170, 70));
+    managePanel.add(manEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 660, 170, 70));
 
     manGrade.setEditable(false);
     manGrade.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
@@ -813,6 +807,11 @@ public class CoorMain extends javax.swing.JFrame {
     AddViolation.setBorderPainted(false);
     AddViolation.setContentAreaFilled(false);
     AddViolation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    AddViolation.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            AddViolationActionPerformed(evt);
+        }
+    });
     regStudent.add(AddViolation, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 540, -1, -1));
 
     regSec1.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
@@ -946,7 +945,7 @@ public class CoorMain extends javax.swing.JFrame {
         String vRem = CoorRemarks.getText();
         String sNumber = studentNumberInp.getText();
         String stEmail = sEmail.getText();
-        
+
         if (!vCat.trim().isEmpty() && !vCom.trim().isEmpty() & !vRem.trim().isEmpty()) {
 
             try {
@@ -1001,20 +1000,22 @@ public class CoorMain extends javax.swing.JFrame {
     private void manSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manSearchActionPerformed
 
         String searchStn = JOptionPane.showInputDialog("Please input a student number: ");
-        
+
         if (conn != null) {
 
-            String SQLrecords = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
-            
+            String SQLrecords = "SELECT * FROM STUDENTDATA LEFT OUTER JOIN VIOLATIONINFO ON STUDENTDATA.STUDENTID = VIOLATIONINFO.SIDENT WHERE STUDENTID=?";
+            DefaultTableModel vioTable = (DefaultTableModel) vioTableData.getModel();
+            Object [] addData = new Object[4];
             if (!searchStn.trim().isEmpty()) {
                 try {
                     PreparedStatement stmt = conn.prepareStatement(SQLrecords);
                     stmt.setString(1, searchStn);
                     ResultSet records = stmt.executeQuery();
-                    if (!records.next()) {
+                    if (records == null) {
                         JOptionPane.showMessageDialog(null, "Student not on records");
                         records.close();
                     } else {
+                        records.next();
                         String SFName = records.getString("SFIRSTNAME");
                         String SMName = records.getString("SMIDNAME");
                         String SLName = records.getString("SLASTNAME");
@@ -1024,6 +1025,7 @@ public class CoorMain extends javax.swing.JFrame {
                         String sTrack = records.getString("STRACK");
                         String sEmail = records.getString("SEMAIL");
                         String sAdv = records.getString("SADVISER");
+
                         manFName.setText(SFName);
                         manMidName.setText(SMName);
                         manLName.setText(SLName);
@@ -1033,17 +1035,35 @@ public class CoorMain extends javax.swing.JFrame {
                         manStrand.setText(sTrack);
                         manEmail.setText(sEmail);
                         manAdv.setText(sAdv);
+
+                        while (records.getRow() > 0) {
+                            String vDate = records.getString("VDATE");
+                            String violation = records.getString("VIOLATION");
+                            String vComments = records.getString("VCOMMENT");
+                            String vRemarks = records.getString("VREMARKS");
+                            
+                            addData[0] = vDate;
+                            addData[1] = violation;
+                            addData[2] = vComments;
+                            addData[3] = vRemarks;
+                            vioTable.addRow(addData);
+                            records.next();
+
+                        }
                         records.close();
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Search input is empty");
             }
         }
     }//GEN-LAST:event_manSearchActionPerformed
+
+    private void AddViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddViolationActionPerformed
+        cardLayout.show(MainPanel, "addVioPanel");
+    }//GEN-LAST:event_AddViolationActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1082,7 +1102,6 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel logout;
     private javax.swing.JTextField manAdv;
@@ -1128,6 +1147,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel studentSectionLbl;
     private javax.swing.JLabel studentTrack;
     private javax.swing.JLabel studentTrackLbl;
+    private javax.swing.JTable vioTableData;
     // End of variables declaration//GEN-END:variables
 
 }
