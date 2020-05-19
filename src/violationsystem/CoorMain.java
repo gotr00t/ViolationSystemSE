@@ -15,7 +15,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -100,6 +99,7 @@ public class CoorMain extends javax.swing.JFrame {
         manSearch = new javax.swing.JButton();
         manEdit = new javax.swing.JButton();
         manGrade = new javax.swing.JTextField();
+        errorResponseMan = new javax.swing.JLabel();
         manBg = new javax.swing.JLabel();
         regStudent = new javax.swing.JPanel();
         regFName = new javax.swing.JTextField();
@@ -108,13 +108,14 @@ public class CoorMain extends javax.swing.JFrame {
         regSNumber = new javax.swing.JTextField();
         regStrand = new javax.swing.JTextField();
         regEmail = new javax.swing.JTextField();
-        regSec = new javax.swing.JTextField();
+        regGrade = new javax.swing.JTextField();
         regAdv = new javax.swing.JTextField();
         regSave = new javax.swing.JButton();
         regPhoto = new javax.swing.JLabel();
         regPicUpl = new javax.swing.JButton();
         AddViolation = new javax.swing.JButton();
-        regSec1 = new javax.swing.JTextField();
+        regSec = new javax.swing.JTextField();
+        errorResponseReg = new javax.swing.JLabel();
         regBg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -192,7 +193,6 @@ public class CoorMain extends javax.swing.JFrame {
         searchStudent.setForeground(new java.awt.Color(255, 255, 255));
         searchStudent.setText("Search Student");
         searchStudent.setAlignmentY(0.0F);
-        searchStudent.setBorder(null);
         searchStudent.setBorderPainted(false);
         searchStudent.setContentAreaFilled(false);
         searchStudent.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -214,7 +214,6 @@ public class CoorMain extends javax.swing.JFrame {
         manage.setForeground(new java.awt.Color(255, 255, 255));
         manage.setText("Manage Data");
         manage.setAlignmentY(0.0F);
-        manage.setBorder(null);
         manage.setContentAreaFilled(false);
         manage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         manage.setIconTextGap(0);
@@ -234,7 +233,6 @@ public class CoorMain extends javax.swing.JFrame {
         register.setForeground(new java.awt.Color(255, 255, 255));
         register.setText("Register");
         register.setAlignmentY(0.0F);
-        register.setBorder(null);
         register.setContentAreaFilled(false);
         register.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         register.setIconTextGap(0);
@@ -267,16 +265,16 @@ public class CoorMain extends javax.swing.JFrame {
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(sidebarLayout.createSequentialGroup()
                             .addGap(66, 66, 66)
                             .addComponent(logo))
                         .addGroup(sidebarLayout.createSequentialGroup()
                             .addGap(33, 33, 33)
-                            .addComponent(searchStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(39, Short.MAX_VALUE))
+                            .addComponent(searchStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(37, Short.MAX_VALUE))
             .addGroup(sidebarLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -290,16 +288,16 @@ public class CoorMain extends javax.swing.JFrame {
                 .addGap(94, 94, 94)
                 .addComponent(logo)
                 .addGap(18, 18, 18)
-                .addComponent(searchStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(logout)
                     .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(330, Short.MAX_VALUE))
+                .addContainerGap(333, Short.MAX_VALUE))
         );
 
         SplitPane.setLeftComponent(sidebar);
@@ -358,6 +356,11 @@ public class CoorMain extends javax.swing.JFrame {
         studentNumberInp.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(1, 1, 1))); // NOI18N
         studentNumberInp.setSelectedTextColor(new java.awt.Color(1, 1, 1));
         studentNumberInp.setSelectionColor(new java.awt.Color(255, 255, 255));
+        studentNumberInp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                studentNumberInpKeyReleased(evt);
+            }
+        });
         scanPanel.add(studentNumberInp, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 320, 340, 60));
 
         ViewInfo.setBackground(new java.awt.Color(255, 255, 255));
@@ -383,6 +386,7 @@ public class CoorMain extends javax.swing.JFrame {
         AddVio.setBorder(null);
         AddVio.setBorderPainted(false);
         AddVio.setContentAreaFilled(false);
+        AddVio.setEnabled(false);
         AddVio.setFocusPainted(false);
         AddVio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         AddVio.addActionListener(new java.awt.event.ActionListener() {
@@ -524,100 +528,76 @@ public class CoorMain extends javax.swing.JFrame {
     managePanel.setPreferredSize(new java.awt.Dimension(1120, 740));
     managePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-    manFName.setEditable(false);
     manFName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manFName.setForeground(new java.awt.Color(102, 102, 102));
     manFName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manFName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "First Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manFName.setFocusable(false);
+    manFName.setEnabled(false);
     manFName.setPreferredSize(new java.awt.Dimension(265, 60));
-    manFName.setRequestFocusEnabled(false);
     manFName.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manFName.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 265, 60));
 
-    manMidName.setEditable(false);
     manMidName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manMidName.setForeground(new java.awt.Color(102, 102, 102));
     manMidName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manMidName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Middle Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manMidName.setFocusable(false);
+    manMidName.setEnabled(false);
     manMidName.setPreferredSize(new java.awt.Dimension(265, 60));
-    manMidName.setRequestFocusEnabled(false);
     manMidName.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manMidName.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manMidName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 265, 60));
 
-    manLName.setEditable(false);
     manLName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manLName.setForeground(new java.awt.Color(102, 102, 102));
     manLName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manLName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Last Name", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manLName.setFocusable(false);
+    manLName.setEnabled(false);
     manLName.setPreferredSize(new java.awt.Dimension(265, 60));
-    manLName.setRequestFocusEnabled(false);
     manLName.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manLName.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 20, 265, 60));
 
-    manSNumber.setEditable(false);
     manSNumber.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manSNumber.setForeground(new java.awt.Color(102, 102, 102));
     manSNumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manSNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Number", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manSNumber.setFocusable(false);
+    manSNumber.setEnabled(false);
     manSNumber.setPreferredSize(new java.awt.Dimension(265, 60));
-    manSNumber.setRequestFocusEnabled(false);
     manSNumber.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manSNumber.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manSNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 265, 60));
 
-    manStrand.setEditable(false);
     manStrand.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manStrand.setForeground(new java.awt.Color(102, 102, 102));
     manStrand.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manStrand.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Strand", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manStrand.setFocusable(false);
+    manStrand.setEnabled(false);
     manStrand.setPreferredSize(new java.awt.Dimension(265, 60));
-    manStrand.setRequestFocusEnabled(false);
     manStrand.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manStrand.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manStrand, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 265, 60));
 
-    manEmail.setEditable(false);
     manEmail.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manEmail.setForeground(new java.awt.Color(102, 102, 102));
     manEmail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "E-mail", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manEmail.setFocusable(false);
+    manEmail.setEnabled(false);
     manEmail.setPreferredSize(new java.awt.Dimension(265, 60));
-    manEmail.setRequestFocusEnabled(false);
     manEmail.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manEmail.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 265, 60));
 
-    manSec.setEditable(false);
     manSec.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manSec.setForeground(new java.awt.Color(102, 102, 102));
     manSec.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manSec.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manSec.setFocusable(false);
+    manSec.setEnabled(false);
     manSec.setPreferredSize(new java.awt.Dimension(265, 60));
-    manSec.setRequestFocusEnabled(false);
     manSec.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manSec.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manSec, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 265, 60));
 
-    manAdv.setEditable(false);
     manAdv.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manAdv.setForeground(new java.awt.Color(102, 102, 102));
     manAdv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manAdv.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Adviser", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manAdv.setFocusable(false);
+    manAdv.setEnabled(false);
     manAdv.setPreferredSize(new java.awt.Dimension(265, 60));
-    manAdv.setRequestFocusEnabled(false);
     manAdv.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manAdv.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manAdv, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 265, 60));
 
     vioTableData.setBorder(null);
@@ -641,7 +621,7 @@ public class CoorMain extends javax.swing.JFrame {
     vioTableData.setRowHeight(20);
     jScrollPane2.setViewportView(vioTableData);
 
-    managePanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 234, 1078, 420));
+    managePanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 1078, 420));
 
     manSave.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
     manSave.setForeground(new java.awt.Color(255, 255, 255));
@@ -651,7 +631,12 @@ public class CoorMain extends javax.swing.JFrame {
     manSave.setBorderPainted(false);
     manSave.setContentAreaFilled(false);
     manSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    managePanel.add(manSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 660, 170, 70));
+    manSave.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            manSaveActionPerformed(evt);
+        }
+    });
+    managePanel.add(manSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 670, 170, 70));
 
     manPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
     manPhoto.setBorder(null);
@@ -674,7 +659,7 @@ public class CoorMain extends javax.swing.JFrame {
             manSearchActionPerformed(evt);
         }
     });
-    managePanel.add(manSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 660, 170, 70));
+    managePanel.add(manSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 670, 170, 70));
 
     manEdit.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
     manEdit.setForeground(new java.awt.Color(255, 255, 255));
@@ -683,20 +668,29 @@ public class CoorMain extends javax.swing.JFrame {
     manEdit.setBorder(null);
     manEdit.setBorderPainted(false);
     manEdit.setContentAreaFilled(false);
+    manEdit.setEnabled(false);
     manEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    managePanel.add(manEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 660, 170, 70));
+    manEdit.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            manEditActionPerformed(evt);
+        }
+    });
+    managePanel.add(manEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 670, 170, 70));
 
-    manGrade.setEditable(false);
     manGrade.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     manGrade.setForeground(new java.awt.Color(102, 102, 102));
     manGrade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     manGrade.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    manGrade.setFocusable(false);
+    manGrade.setEnabled(false);
     manGrade.setPreferredSize(new java.awt.Dimension(265, 60));
-    manGrade.setRequestFocusEnabled(false);
     manGrade.setSelectionColor(new java.awt.Color(255, 255, 255));
-    manGrade.setVerifyInputWhenFocusTarget(false);
     managePanel.add(manGrade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 265, 60));
+
+    errorResponseMan.setForeground(new java.awt.Color(253, 104, 0));
+    errorResponseMan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    errorResponseMan.setBorder(null);
+    errorResponseMan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    managePanel.add(errorResponseMan, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 265, 30));
 
     manBg.setBackground(new java.awt.Color(255, 186, 8));
     manBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -747,6 +741,11 @@ public class CoorMain extends javax.swing.JFrame {
     regSNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Number", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
     regSNumber.setMinimumSize(new java.awt.Dimension(265, 60));
     regSNumber.setPreferredSize(new java.awt.Dimension(265, 60));
+    regSNumber.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            regSNumberMouseClicked(evt);
+        }
+    });
     regStudent.add(regSNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 265, 60));
 
     regStrand.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
@@ -765,13 +764,13 @@ public class CoorMain extends javax.swing.JFrame {
     regEmail.setPreferredSize(new java.awt.Dimension(265, 60));
     regStudent.add(regEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 380, 265, 60));
 
-    regSec.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-    regSec.setForeground(new java.awt.Color(102, 102, 102));
-    regSec.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-    regSec.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    regSec.setMinimumSize(new java.awt.Dimension(265, 60));
-    regSec.setPreferredSize(new java.awt.Dimension(265, 60));
-    regStudent.add(regSec, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 380, 265, 60));
+    regGrade.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regGrade.setForeground(new java.awt.Color(102, 102, 102));
+    regGrade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regGrade.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regGrade.setMinimumSize(new java.awt.Dimension(265, 60));
+    regGrade.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regGrade, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 380, 265, 60));
 
     regAdv.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     regAdv.setForeground(new java.awt.Color(102, 102, 102));
@@ -789,6 +788,11 @@ public class CoorMain extends javax.swing.JFrame {
     regSave.setBorderPainted(false);
     regSave.setContentAreaFilled(false);
     regSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    regSave.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            regSaveActionPerformed(evt);
+        }
+    });
     regStudent.add(regSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, -1, -1));
 
     regPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
@@ -797,7 +801,7 @@ public class CoorMain extends javax.swing.JFrame {
     regStudent.add(regPhoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 170, 159));
 
     regPicUpl.setText("Upload Photo");
-    regStudent.add(regPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 130, -1));
+    regStudent.add(regPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 130, -1));
 
     AddViolation.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
     AddViolation.setForeground(new java.awt.Color(255, 255, 255));
@@ -814,13 +818,17 @@ public class CoorMain extends javax.swing.JFrame {
     });
     regStudent.add(AddViolation, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 540, -1, -1));
 
-    regSec1.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-    regSec1.setForeground(new java.awt.Color(102, 102, 102));
-    regSec1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-    regSec1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
-    regSec1.setMinimumSize(new java.awt.Dimension(265, 60));
-    regSec1.setPreferredSize(new java.awt.Dimension(265, 60));
-    regStudent.add(regSec1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, 265, 60));
+    regSec.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+    regSec.setForeground(new java.awt.Color(102, 102, 102));
+    regSec.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    regSec.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Section", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 14), new java.awt.Color(102, 102, 102))); // NOI18N
+    regSec.setMinimumSize(new java.awt.Dimension(265, 60));
+    regSec.setPreferredSize(new java.awt.Dimension(265, 60));
+    regStudent.add(regSec, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, 265, 60));
+
+    errorResponseReg.setForeground(new java.awt.Color(253, 140, 0));
+    errorResponseReg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    regStudent.add(errorResponseReg, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 280, 300, 30));
 
     regBg.setBackground(new java.awt.Color(255, 186, 8));
     regBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -913,10 +921,26 @@ public class CoorMain extends javax.swing.JFrame {
 
     private void AddVioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddVioActionPerformed
 
-        if (!studentNumberInp.getText().trim().isEmpty()) {
-            cardLayout.show(MainPanel, "addVioPanel");
-        } else {
-            errorResponse.setText("Please Enter a Student Number");
+        try {
+            String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
+            PreparedStatement stmt = conn.prepareStatement(SQLFind);
+            stmt.setString(1, studentNumberInp.getText());
+            ResultSet records = stmt.executeQuery();
+            //restrict non character symbols or integer
+
+            if (!studentNumberInp.getText().trim().isEmpty()) {
+                if (records.next()) {
+                    cardLayout.show(MainPanel, "addVioPanel");
+                } else {
+                    errorResponse.setText("Invalid Student Number");
+                    records.close();
+                }
+            } else {
+                errorResponse.setText("Please enter a valid student number");
+                records.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_AddVioActionPerformed
 
@@ -1005,12 +1029,15 @@ public class CoorMain extends javax.swing.JFrame {
 
             String SQLrecords = "SELECT * FROM STUDENTDATA LEFT OUTER JOIN VIOLATIONINFO ON STUDENTDATA.STUDENTID = VIOLATIONINFO.SIDENT WHERE STUDENTID=?";
             DefaultTableModel vioTable = (DefaultTableModel) vioTableData.getModel();
-            Object [] addData = new Object[4];
+            Object[] addData = new Object[4];
+            vioTable.setRowCount(0);
+            
             if (!searchStn.trim().isEmpty()) {
                 try {
-                    PreparedStatement stmt = conn.prepareStatement(SQLrecords);
-                    stmt.setString(1, searchStn);
-                    ResultSet records = stmt.executeQuery();
+                    PreparedStatement stmt3 = conn.prepareStatement(SQLrecords);
+                    stmt3.setString(1, searchStn);
+                    ResultSet records = stmt3.executeQuery();
+                    //add restriction to charater input
                     if (records == null) {
                         JOptionPane.showMessageDialog(null, "Student not on records");
                         records.close();
@@ -1026,10 +1053,10 @@ public class CoorMain extends javax.swing.JFrame {
                         String sEmail = records.getString("SEMAIL");
                         String sAdv = records.getString("SADVISER");
 
+                        manSNumber.setText(SNum);
                         manFName.setText(SFName);
                         manMidName.setText(SMName);
                         manLName.setText(SLName);
-                        manSNumber.setText(SNum);
                         manGrade.setText(sGrade);
                         manSec.setText(sSec);
                         manStrand.setText(sTrack);
@@ -1041,7 +1068,7 @@ public class CoorMain extends javax.swing.JFrame {
                             String violation = records.getString("VIOLATION");
                             String vComments = records.getString("VCOMMENT");
                             String vRemarks = records.getString("VREMARKS");
-                            
+
                             addData[0] = vDate;
                             addData[1] = violation;
                             addData[2] = vComments;
@@ -1050,6 +1077,9 @@ public class CoorMain extends javax.swing.JFrame {
                             records.next();
 
                         }
+
+                        searchStn = "";
+                        manEdit.setEnabled(true);
                         records.close();
                     }
                 } catch (SQLException ex) {
@@ -1062,8 +1092,145 @@ public class CoorMain extends javax.swing.JFrame {
     }//GEN-LAST:event_manSearchActionPerformed
 
     private void AddViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddViolationActionPerformed
-        cardLayout.show(MainPanel, "addVioPanel");
+
+        try {
+            String StudNum = regSNumber.getText();
+            int SNumber = Integer.parseInt(StudNum);
+            String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
+            PreparedStatement stmt1 = conn.prepareStatement(SQLFind);
+            stmt1.setInt(1, SNumber);
+            ResultSet records = stmt1.executeQuery();
+
+            if (!regSNumber.getText().trim().isEmpty()) {
+
+                if (records.next()) {
+                    cardLayout.show(MainPanel, "addVioPanel");
+                    records.close();
+                }
+            } else {
+                errorResponseReg.setText("Student number not found");
+                records.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException | NumberFormatException e) {
+            errorResponseReg.setText("Invalid Student Number");
+        }
+
     }//GEN-LAST:event_AddViolationActionPerformed
+
+    private void regSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regSaveActionPerformed
+
+        if (conn != null) {
+            try {
+                String StudNum = regSNumber.getText();
+                int SNumber = Integer.parseInt(StudNum);
+                String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
+                PreparedStatement stmt1 = conn.prepareStatement(SQLFind);
+                stmt1.setInt(1, SNumber);
+                ResultSet records = stmt1.executeQuery();
+
+                if (!records.next()) {
+
+                    records.close();
+                    String SQLupdate = "INSERT INTO STUDENTDATA VALUES (?,?,?,?,?,?,?,?,?)";
+                    String RegSnum = regSNumber.getText();
+                    String RegFname = regFName.getText();
+                    String RegMname = regMidName.getText();
+                    String RegLname = regLName.getText();
+                    String RegGrade = regGrade.getText();
+                    String SSec = regSec.getText();
+                    String STrack = regStrand.getText();
+                    String SEmail = regEmail.getText();
+                    String SAdv = regAdv.getText();
+
+                    try {
+                        PreparedStatement stmt = conn.prepareStatement(SQLupdate);
+                        stmt.setString(1, RegSnum);
+                        stmt.setString(2, RegFname);
+                        stmt.setString(3, RegMname);
+                        stmt.setString(4, RegLname);
+                        stmt.setString(5, RegGrade);
+                        stmt.setString(6, SSec);
+                        stmt.setString(7, STrack);
+                        stmt.setString(8, SEmail);
+                        stmt.setString(9, SAdv);
+                        stmt.executeUpdate();
+                        stmt.close();
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    errorResponseReg.setText("Student already registered");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NumberFormatException e) {
+                errorResponseReg.setText("Invalid Student Number");
+            }
+        }
+
+    }//GEN-LAST:event_regSaveActionPerformed
+
+    private void studentNumberInpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_studentNumberInpKeyReleased
+        if (!studentNumberInp.getText().trim().isEmpty()) {
+            AddVio.setEnabled(true);
+        } else {
+            AddVio.setEnabled(false);
+        }
+    }//GEN-LAST:event_studentNumberInpKeyReleased
+
+    private void regSNumberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_regSNumberMouseClicked
+        errorResponseReg.setText("");
+    }//GEN-LAST:event_regSNumberMouseClicked
+
+    private void manEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manEditActionPerformed
+
+        manSNumber.setEnabled(true);
+        manFName.setEnabled(true);
+        manMidName.setEnabled(true);
+        manLName.setEnabled(true);
+        manGrade.setEnabled(true);
+        manSec.setEnabled(true);
+        manStrand.setEnabled(true);
+        manEmail.setEnabled(true);
+        manAdv.setEnabled(true);
+
+    }//GEN-LAST:event_manEditActionPerformed
+
+    private void manSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manSaveActionPerformed
+
+        if (conn != null) {
+
+            if (!manSNumber.getText().trim().isEmpty()) {
+                try {
+                    String SQLUpdate = "UPDATE STUDENTDATA SET STUDENTID = ?, SFIRSTNAME=?, SMIDNAME=?, SLASTNAME=?, SGRADE=?, SSEC=?, STRACK=?, SEMAIL=?, SADVISER=? WHERE STUDENTID=?";
+                    String StudNum = manSNumber.getText();
+                    int SNumber = Integer.parseInt(StudNum);
+
+                    PreparedStatement stmt1 = conn.prepareStatement(SQLUpdate);
+                    stmt1.setInt(1, SNumber);
+                    stmt1.setString(2, manFName.getText());
+                    stmt1.setString(3, manMidName.getText());
+                    stmt1.setString(4, manLName.getText());
+                    stmt1.setString(5, manGrade.getText());
+                    stmt1.setString(6, manSec.getText());
+                    stmt1.setString(7, manStrand.getText());
+                    stmt1.setString(8, manEmail.getText());
+                    stmt1.setString(9, manAdv.getText());
+                    stmt1.setInt(10, SNumber);
+                    stmt1.executeUpdate();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                errorResponseMan.setText("Records is empty");
+            }
+        }
+    }//GEN-LAST:event_manSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1097,6 +1264,8 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel bgVio;
     private javax.swing.JLabel closeBtn;
     private javax.swing.JLabel errorResponse;
+    private javax.swing.JLabel errorResponseMan;
+    private javax.swing.JLabel errorResponseReg;
     private javax.swing.JLabel errorResponseV;
     private javax.swing.JLabel generate;
     private javax.swing.JLabel icon;
@@ -1126,6 +1295,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel regBg;
     private javax.swing.JTextField regEmail;
     private javax.swing.JTextField regFName;
+    private javax.swing.JTextField regGrade;
     private javax.swing.JTextField regLName;
     private javax.swing.JTextField regMidName;
     private javax.swing.JLabel regPhoto;
@@ -1133,7 +1303,6 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JTextField regSNumber;
     private javax.swing.JButton regSave;
     private javax.swing.JTextField regSec;
-    private javax.swing.JTextField regSec1;
     private javax.swing.JTextField regStrand;
     private javax.swing.JPanel regStudent;
     private javax.swing.JButton register;

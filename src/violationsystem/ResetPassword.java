@@ -298,6 +298,7 @@ public class ResetPassword extends javax.swing.JFrame {
                 PreparedStatement stmt = conn.prepareStatement(sqlFetchID, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 stmt.setString(1, EmployeeID);
                 ResultSet records = stmt.executeQuery();
+                //add restrictions to symbol
 
                 if (!records.next()) {
                     errorResponse.setText("Employee not found");
