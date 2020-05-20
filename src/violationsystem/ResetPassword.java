@@ -304,8 +304,8 @@ public class ResetPassword extends javax.swing.JFrame {
                     errorResponse.setText("Employee not found");
                 }
                 String Key = records.getString("SECRETANSWER");
-                //add decrypt function for secret key
-                if (Key.equals(SKeyField.getText())) {
+                String decryptedkey = Security.decrypt(Key);
+                if (decryptedkey.equals(SKeyField.getText())) {
                     String encryptedPass = Security.encrypt(npass.getText());
                     records.updateString("UPASSWORD", encryptedPass);
                     records.updateRow();

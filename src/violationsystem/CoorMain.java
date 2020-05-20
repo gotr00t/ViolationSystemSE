@@ -88,8 +88,8 @@ public class CoorMain extends javax.swing.JFrame {
         CoorRemarks = new javax.swing.JTextField();
         DatePanel = new datechooser.beans.DateChooserPanel();
         SaveVio = new javax.swing.JButton();
-        SName = new javax.swing.JLabel();
         errorResponseV = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         bgVio = new javax.swing.JLabel();
         managePanel = new javax.swing.JPanel();
         manFName = new javax.swing.JTextField();
@@ -460,7 +460,7 @@ public class CoorMain extends javax.swing.JFrame {
 
         CoorRemarks.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Remarks", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
         CoorRemarks.setEnabled(false);
-        AddVioPanel.add(CoorRemarks, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 600, 740, 50));
+        AddVioPanel.add(CoorRemarks, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 590, 740, 50));
 
         DatePanel.setCurrentView(new datechooser.view.appearance.AppearancesList("Light",
             new datechooser.view.appearance.ViewAppearance("custom",
@@ -522,11 +522,17 @@ public class CoorMain extends javax.swing.JFrame {
             SaveVioActionPerformed(evt);
         }
     });
-    AddVioPanel.add(SaveVio, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 660, 150, 50));
-    AddVioPanel.add(SName, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 310, 220, 30));
+    AddVioPanel.add(SaveVio, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 650, 150, 50));
 
     errorResponseV.setForeground(new java.awt.Color(255, 104, 0));
     AddVioPanel.add(errorResponseV, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 250, 30));
+
+    jLabel1.setFont(new java.awt.Font("Source Code Pro Semibold", 0, 12)); // NOI18N
+    jLabel1.setForeground(new java.awt.Color(102, 102, 102));
+    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    jLabel1.setText("Character limit is 255");
+    jLabel1.setBorder(null);
+    AddVioPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 320, 180, 20));
 
     bgVio.setBackground(new java.awt.Color(255, 186, 8));
     bgVio.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -1174,6 +1180,8 @@ public class CoorMain extends javax.swing.JFrame {
 
     private void AddViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddViolationActionPerformed
 
+        //number exception format error from register student side
+        
         try {
             String StudNum = regSNumber.getText();
             int SNumber = Integer.parseInt(StudNum);
@@ -1241,7 +1249,7 @@ public class CoorMain extends javax.swing.JFrame {
                         stmt.executeUpdate();
                         stmt.close();
                         
-                        //add confirmation message
+                        JOptionPane.showMessageDialog(null, "Records successfully added");
 
                     } catch (SQLException ex) {
                         Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -1443,7 +1451,6 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel MenuBar;
     private javax.swing.JTextArea SComments;
-    private javax.swing.JLabel SName;
     private javax.swing.JButton SaveVio;
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton ViewInfo;
@@ -1458,6 +1465,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel generate;
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel logout;

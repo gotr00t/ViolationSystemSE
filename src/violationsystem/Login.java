@@ -161,7 +161,7 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        Login.add(MenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1420, 50));
+        Login.add(MenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1430, 50));
 
         Coordinator.setBackground(new java.awt.Color(255, 255, 255));
         userRole.add(Coordinator);
