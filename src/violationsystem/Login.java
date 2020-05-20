@@ -275,9 +275,9 @@ public class Login extends javax.swing.JFrame {
                             case "Administrator":
 
                                 records.close();
-                                new AdminMain().setVisible(true);
-                                new AdminMain().pack();
-                                new AdminMain().setLocationRelativeTo(null);
+                                new AdminMain(DBID).setVisible(true);
+                                new AdminMain(DBID).pack();
+                                new AdminMain(DBID).setLocationRelativeTo(null);
                                 this.dispose();
                                 break;
 

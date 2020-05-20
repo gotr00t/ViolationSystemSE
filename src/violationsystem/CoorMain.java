@@ -1217,6 +1217,7 @@ public class CoorMain extends javax.swing.JFrame {
                     records.close();
                     String SQLupdate = "INSERT INTO STUDENTDATA VALUES (?,?,?,?,?,?,?,?,?)";
                     String RegSnum = regSNumber.getText();
+                    int StudNum1 = Integer.parseInt(RegSnum);
                     String RegFname = regFName.getText();
                     String RegMname = regMidName.getText();
                     String RegLname = regLName.getText();
@@ -1228,7 +1229,7 @@ public class CoorMain extends javax.swing.JFrame {
 
                     try {
                         PreparedStatement stmt = conn.prepareStatement(SQLupdate);
-                        stmt.setString(1, RegSnum);
+                        stmt.setInt(1, StudNum1);
                         stmt.setString(2, RegFname);
                         stmt.setString(3, RegMname);
                         stmt.setString(4, RegLname);
@@ -1239,6 +1240,8 @@ public class CoorMain extends javax.swing.JFrame {
                         stmt.setString(9, SAdv);
                         stmt.executeUpdate();
                         stmt.close();
+                        
+                        //add confirmation message
 
                     } catch (SQLException ex) {
                         Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
