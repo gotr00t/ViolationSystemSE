@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 
 /**
  *
@@ -28,16 +29,23 @@ public class AdminMain extends javax.swing.JFrame {
     int mousepX;
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
-    String UID = null;
+    int UID;
     CardLayout cardLayout;
 
-    public AdminMain(String DBID) {
+    public AdminMain(int DBID) {
 
         UID = DBID;
         initComponents();
 
         //set Field Limits for Text Areas
         cardLayout = (CardLayout) (MainPanel.getLayout());
+        ((AbstractDocument)manFName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument)manMidName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument)manLName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        manUser.setDocument(new FieldLimit(16));
+        manPass.setDocument(new FieldLimit(16));
+        manCPass.setDocument(new FieldLimit(16));
+        manKey.setDocument(new FieldLimit(24));
 
     }
 
@@ -65,13 +73,15 @@ public class AdminMain extends javax.swing.JFrame {
         manCPass = new javax.swing.JPasswordField();
         manPass = new javax.swing.JPasswordField();
         manRole = new javax.swing.JComboBox();
-        manPhoto = new javax.swing.JLabel();
         manUser = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         userRecData = new javax.swing.JTable();
         manViewRec = new javax.swing.JButton();
         manSvBtn = new javax.swing.JButton();
         manEID = new javax.swing.JTextField();
+        manRmvBtn = new javax.swing.JButton();
+        manUpdate = new javax.swing.JButton();
+        manGenRep = new javax.swing.JButton();
         errorResponse = new javax.swing.JLabel();
         manBg = new javax.swing.JLabel();
         logPanel = new javax.swing.JPanel();
@@ -200,8 +210,6 @@ public class AdminMain extends javax.swing.JFrame {
         });
 
         generate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/generate.png"))); // NOI18N
-        generate.setText("jLabel7");
-        generate.setPreferredSize(new java.awt.Dimension(44, 41));
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
@@ -209,7 +217,7 @@ public class AdminMain extends javax.swing.JFrame {
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(generate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addComponent(logout)
                 .addGap(51, 51, 51))
@@ -235,7 +243,7 @@ public class AdminMain extends javax.swing.JFrame {
                 .addGap(71, 71, 71)
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(logout)
-                    .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(generate))
                 .addContainerGap(263, Short.MAX_VALUE))
         );
 
@@ -261,7 +269,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manFNameKeyReleased(evt);
             }
         });
-        manPanel.add(manFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 265, 45));
+        manPanel.add(manFName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 265, 45));
 
         manMidName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manMidName.setForeground(new java.awt.Color(102, 102, 102));
@@ -275,7 +283,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manMidNameKeyReleased(evt);
             }
         });
-        manPanel.add(manMidName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 265, 45));
+        manPanel.add(manMidName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 265, 45));
 
         manLName.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manLName.setForeground(new java.awt.Color(102, 102, 102));
@@ -289,7 +297,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manLNameKeyReleased(evt);
             }
         });
-        manPanel.add(manLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 265, 45));
+        manPanel.add(manLName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 265, 45));
 
         manKey.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manKey.setForeground(new java.awt.Color(102, 102, 102));
@@ -303,7 +311,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manKeyKeyReleased(evt);
             }
         });
-        manPanel.add(manKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 630, 265, 45));
+        manPanel.add(manKey, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 265, 45));
 
         manCPass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manCPass.setForeground(new java.awt.Color(102, 102, 102));
@@ -323,7 +331,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manCPassKeyReleased(evt);
             }
         });
-        manPanel.add(manCPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 265, 45));
+        manPanel.add(manCPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 265, 45));
 
         manPass.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manPass.setForeground(new java.awt.Color(102, 102, 102));
@@ -343,7 +351,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manPassKeyReleased(evt);
             }
         });
-        manPanel.add(manPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 530, 265, 45));
+        manPanel.add(manPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 265, 45));
 
         manRole.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manRole.setForeground(new java.awt.Color(102, 102, 102));
@@ -355,12 +363,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manRoleItemStateChanged(evt);
             }
         });
-        manPanel.add(manRole, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, 265, 50));
-
-        manPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
-        manPhoto.setBorder(null);
-        manPhoto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        manPanel.add(manPhoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 185, 160));
+        manPanel.add(manRole, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 265, 50));
 
         manUser.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manUser.setForeground(new java.awt.Color(102, 102, 102));
@@ -374,7 +377,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manUserKeyReleased(evt);
             }
         });
-        manPanel.add(manUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 265, 45));
+        manPanel.add(manUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 265, 45));
 
         userRecData.setBorder(null);
         userRecData.setModel(new javax.swing.table.DefaultTableModel(
@@ -394,9 +397,14 @@ public class AdminMain extends javax.swing.JFrame {
             }
         });
         userRecData.setRowHeight(20);
+        userRecData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userRecDataMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(userRecData);
 
-        manPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 750, 710));
+        manPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 750, 640));
 
         manViewRec.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         manViewRec.setForeground(new java.awt.Color(255, 255, 255));
@@ -411,7 +419,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manViewRecActionPerformed(evt);
             }
         });
-        manPanel.add(manViewRec, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 690, 160, 50));
+        manPanel.add(manViewRec, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 610, 160, 50));
 
         manSvBtn.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         manSvBtn.setForeground(new java.awt.Color(255, 255, 255));
@@ -426,7 +434,7 @@ public class AdminMain extends javax.swing.JFrame {
                 manSvBtnActionPerformed(evt);
             }
         });
-        manPanel.add(manSvBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 690, 160, 50));
+        manPanel.add(manSvBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 160, 50));
 
         manEID.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         manEID.setForeground(new java.awt.Color(102, 102, 102));
@@ -439,13 +447,58 @@ public class AdminMain extends javax.swing.JFrame {
                 manEIDKeyReleased(evt);
             }
         });
-        manPanel.add(manEID, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 265, 50));
+        manPanel.add(manEID, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 265, 50));
+
+        manRmvBtn.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        manRmvBtn.setForeground(new java.awt.Color(255, 255, 255));
+        manRmvBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+        manRmvBtn.setText("Remove");
+        manRmvBtn.setBorder(null);
+        manRmvBtn.setBorderPainted(false);
+        manRmvBtn.setContentAreaFilled(false);
+        manRmvBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        manRmvBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manRmvBtnActionPerformed(evt);
+            }
+        });
+        manPanel.add(manRmvBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 550, 160, 50));
+
+        manUpdate.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        manUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        manUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+        manUpdate.setText("Update");
+        manUpdate.setBorder(null);
+        manUpdate.setBorderPainted(false);
+        manUpdate.setContentAreaFilled(false);
+        manUpdate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        manUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manUpdateActionPerformed(evt);
+            }
+        });
+        manPanel.add(manUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 610, 160, 50));
+
+        manGenRep.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        manGenRep.setForeground(new java.awt.Color(255, 255, 255));
+        manGenRep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+        manGenRep.setText("Generate Report");
+        manGenRep.setBorder(null);
+        manGenRep.setBorderPainted(false);
+        manGenRep.setContentAreaFilled(false);
+        manGenRep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        manGenRep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manGenRepActionPerformed(evt);
+            }
+        });
+        manPanel.add(manGenRep, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 670, 160, 50));
 
         errorResponse.setForeground(new java.awt.Color(253, 104, 0));
         errorResponse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorResponse.setBorder(null);
         errorResponse.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        manPanel.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 265, 30));
+        manPanel.add(errorResponse, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, 265, 40));
 
         manBg.setBackground(new java.awt.Color(255, 186, 8));
         manBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -643,18 +696,18 @@ public class AdminMain extends javax.swing.JFrame {
             try {
                 String SQLFind = "SELECT * FROM USERDATA WHERE EID=?";
                 PreparedStatement StateFind = conn.prepareStatement(SQLFind);
-                StateFind.setInt(1,EID);
+                StateFind.setInt(1, EID);
                 ResultSet records = StateFind.executeQuery();
                 records.next();
                 String LocID = records.getString("EID");
-                
+
                 if (LocID.equals(UID)) {
                     try {
                         String SQLDelete = "DELETE FROM SYSTEMLOG";
                         PreparedStatement StateDelete = conn.prepareStatement(SQLDelete);
                         StateDelete.executeUpdate();
                         StateDelete.close();
-                        
+
                         String SQLTrack = "INSERT INTO SYSTEMLOG VALUES (DEFAULT,?,?,NULL,?,NULL)";
                         PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
                         StateTrack.setString(1, lDate);
@@ -662,13 +715,13 @@ public class AdminMain extends javax.swing.JFrame {
                         StateTrack.setInt(3, EID);
                         StateTrack.executeUpdate();
                         StateTrack.close();
-                        
+
                         JOptionPane.showMessageDialog(null, "Records has been succesfully wiped");
-                        
+
                     } catch (SQLException ex) {
                         Logger.getLogger(AdminMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(null, "Invalid Employee ID Confirmation");
                 }
             } catch (SQLException ex) {
@@ -678,9 +731,18 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_SysDelActionPerformed
 
     private void manViewRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manViewRecActionPerformed
+
         String SQLrecords = "SELECT * FROM USERDATA LEFT OUTER JOIN USERCRED ON USERDATA.EID = USERCRED.EID";
         DefaultTableModel RecordTable = (DefaultTableModel) userRecData.getModel();
         Object[] addData = new Object[7];
+        manSvBtn.setEnabled(false);
+        errorResponse.setText("");
+        manEID.setText("");
+        manFName.setText("");
+        manMidName.setText("");
+        manLName.setText("");
+        manUser.setText("");
+        manRole.setSelectedItem("");
 
         if (conn != null) {
             try {
@@ -749,8 +811,12 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_manLNameKeyReleased
 
     private void manUserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_manUserKeyReleased
+        int ctr = userRecData.getRowCount();
+        
         if (!manUser.getText().trim().isEmpty()) {
+            if(ctr==0){
             manPass.setEnabled(true);
+            }
         } else {
             manPass.setEnabled(false);
         }
@@ -868,12 +934,134 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_manSvBtnActionPerformed
 
     private void manEIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_manEIDKeyReleased
+        
         if (!manEID.getText().trim().isEmpty()) {
             manFName.setEnabled(true);
         } else {
             manFName.setEnabled(false);
         }
     }//GEN-LAST:event_manEIDKeyReleased
+
+    private void manRmvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manRmvBtnActionPerformed
+
+        int Choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the record?");
+
+        int ctr = userRecData.getSelectedRow();
+        if (ctr >= 0 && Choice == 0) {
+
+            try {
+
+                int sel = Integer.parseInt(userRecData.getValueAt(ctr, 0).toString());
+                String SQLRemove = "DELETE FROM USERCRED WHERE EID=?";
+                String SQLRemove2 = "DELETE FROM USERDATA WHERE EID=?";
+                String SQLTrack = "INSERT INTO SYSTEMLOG VALUES (DEFAULT,?,?,NULL,?,NULL)";
+                String lDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+                String lTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+                PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
+                StateTrack.setString(1, lDate);
+                StateTrack.setString(2, lTime);
+                StateTrack.setInt(3, sel);
+                StateTrack.executeUpdate();
+                StateTrack.close();
+
+                PreparedStatement StateRemove = conn.prepareStatement(SQLRemove);
+                StateRemove.setInt(1, sel);
+                StateRemove.executeUpdate();
+                StateRemove.close();
+
+                PreparedStatement StateRemove2 = conn.prepareStatement(SQLRemove2);
+                StateRemove2.setInt(1, sel);
+                StateRemove2.executeUpdate();
+                StateRemove2.close();
+                errorResponse.setText("Record Deleted Successfully");
+                manSvBtn.setEnabled(true);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No changes were done");
+        }
+    }//GEN-LAST:event_manRmvBtnActionPerformed
+
+    private void manUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manUpdateActionPerformed
+        if (conn != null) {
+
+            int Choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to update this record?");
+
+            if (!manEID.getText().trim().isEmpty() && Choice == 0) {
+                try {
+                    String SQLUpdate = "UPDATE USERDATA SET ENAME=?, EMNAME=?, ELNAME=? WHERE EID=?";
+                    String SQLUpdate2 = "UPDATE USERCRED SET ROLE=?, USERNAME=? WHERE EID=?";
+
+                    int EID = Integer.parseInt(manEID.getText());
+                    PreparedStatement StateUpdate = conn.prepareStatement(SQLUpdate);
+                    StateUpdate.setString(1, manFName.getText());
+                    StateUpdate.setString(2, manMidName.getText());
+                    StateUpdate.setString(3, manLName.getText());
+                    StateUpdate.setInt(4, EID);
+                    StateUpdate.executeUpdate();
+                    StateUpdate.close();
+
+                    PreparedStatement StateUpdate2 = conn.prepareStatement(SQLUpdate2);
+                    StateUpdate2.setString(1, (String) manRole.getSelectedItem());
+                    StateUpdate2.setString(2, manUser.getText());
+                    StateUpdate2.setInt(3, EID);
+                    StateUpdate2.executeUpdate();
+                    StateUpdate2.close();
+
+                    String lDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+                    String lTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    String SQLTrack = "INSERT INTO SYSTEMLOG VALUES (DEFAULT,?,?,NULL,?,NULL)";
+                    PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
+                    StateTrack.setString(1, lDate);
+                    StateTrack.setString(2, lTime);
+                    StateTrack.setInt(3, EID);
+                    StateTrack.executeUpdate();
+                    StateTrack.close();
+
+                    errorResponse.setText("Records has been succesfully updated");
+                    manEID.setText("");
+                    manFName.setText("");
+                    manMidName.setText("");
+                    manLName.setText("");
+                    manUser.setText("");
+                    manRole.setSelectedItem("");
+                    manSvBtn.setEnabled(true);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No changes were made");
+            }
+        }
+    }//GEN-LAST:event_manUpdateActionPerformed
+
+    private void manGenRepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manGenRepActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_manGenRepActionPerformed
+
+    private void userRecDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userRecDataMouseClicked
+        DefaultTableModel UserData = (DefaultTableModel) userRecData.getModel();
+        int sel = userRecData.getSelectedRow();
+        
+        if (sel>=0){
+        manFName.setEnabled(true);
+        manMidName.setEnabled(true);
+        manLName.setEnabled(true);
+        manUser.setEnabled(true);
+        manRole.setEnabled(true);
+        manEID.setText(UserData.getValueAt(sel, 0).toString());
+        manFName.setText(UserData.getValueAt(sel, 1).toString());
+        manMidName.setText(UserData.getValueAt(sel, 2).toString());
+        manLName.setText(UserData.getValueAt(sel, 3).toString());
+        manUser.setText(UserData.getValueAt(sel, 4).toString());
+        manRole.setSelectedItem(UserData.getValueAt(sel, 5).toString());
+        }
+        
+    }//GEN-LAST:event_userRecDataMouseClicked
 
     /**
      * @param args the command line arguments
@@ -909,14 +1097,16 @@ public class AdminMain extends javax.swing.JFrame {
     private javax.swing.JButton manData;
     private javax.swing.JTextField manEID;
     private javax.swing.JTextField manFName;
+    private javax.swing.JButton manGenRep;
     private javax.swing.JTextField manKey;
     private javax.swing.JTextField manLName;
     private javax.swing.JTextField manMidName;
     private javax.swing.JPanel manPanel;
     private javax.swing.JPasswordField manPass;
-    private javax.swing.JLabel manPhoto;
+    private javax.swing.JButton manRmvBtn;
     private javax.swing.JComboBox manRole;
     private javax.swing.JButton manSvBtn;
+    private javax.swing.JButton manUpdate;
     private javax.swing.JTextField manUser;
     private javax.swing.JButton manViewRec;
     private javax.swing.JLabel minimizeBtn;

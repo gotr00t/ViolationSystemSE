@@ -5,11 +5,12 @@
  */
 package violationsystem;
 
-import javax.swing.JFrame;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.text.AbstractDocument;
 
 /**
  *
@@ -25,10 +26,9 @@ public class Login extends javax.swing.JFrame {
         System.out.println("Calling LogIn form");
         System.out.println("Calling initComponents");
         initComponents();
-
         username.setDocument(new FieldLimit(16));
         password.setDocument(new FieldLimit(24));
-        //initialize text limits to all fields matching the DB size
+
     }
 
     @SuppressWarnings("unchecked")
@@ -256,7 +256,7 @@ public class Login extends javax.swing.JFrame {
                         String DBPass = records.getString("UPASSWORD");
                         String decryptedPass = Security.decrypt(DBPass);
                         String DBRole = records.getString("ROLE");
-                        String DBID = records.getString("EID");
+                        int DBID = records.getInt("EID");
 
                         Login Checker = new Login();
                         String valResult = Checker.ValidateCred(Username, Password, DBUser, decryptedPass, DBRole, RoleSelected);
@@ -369,7 +369,7 @@ public class Login extends javax.swing.JFrame {
                 return "Coordinator";
             } else if (Role.equals(RoleSelected) && Role.equals("Administrator")) {
                 return "Administrator";
-            } else if (Role.equals("MASTERADMIN")) {
+            } else if (Role.equals("MasterAdmin")) {
                 return RoleSelected;
             } else {
                 return "InvalidUser";
@@ -394,6 +394,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel minimize;
     private javax.swing.JPasswordField password;
     private javax.swing.ButtonGroup userRole;
-    public javax.swing.JTextField username;
+    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

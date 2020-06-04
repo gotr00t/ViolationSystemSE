@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 
 /**
  *
@@ -31,11 +32,11 @@ public class CoorMain extends javax.swing.JFrame {
     int mousepX;
     int mousepY;
     Connection conn = DBConnector.ConnectDB();
-    String UID = null;
+    int UID;
     CardLayout cardLayout;
     int StudentNumber;
 
-    public CoorMain(String DBID) {
+    public CoorMain(int DBID) {
 
         UID = DBID;
         initComponents();
@@ -49,6 +50,24 @@ public class CoorMain extends javax.swing.JFrame {
         txtFldRem.setVisible(false);
         manRemove.setVisible(false);
         manUpdate.setVisible(false);
+        SComments.setDocument(new FieldLimit(255));
+        ((AbstractDocument) studentNumberInp.getDocument()).setDocumentFilter(new MyDocumentFilter1());
+        ((AbstractDocument) manFName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manMidName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manLName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manEmail.getDocument()).setDocumentFilter(new MyDocumentFilter2());
+        ((AbstractDocument) manStrand.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manAdv.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manSNumber.getDocument()).setDocumentFilter(new MyDocumentFilter1());
+        ((AbstractDocument) manGrade.getDocument()).setDocumentFilter(new MyDocumentFilter1());
+        ((AbstractDocument) regFName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) regMidName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) regLName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) regEmail.getDocument()).setDocumentFilter(new MyDocumentFilter2());
+        ((AbstractDocument) regStrand.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) regAdv.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) regSNumber.getDocument()).setDocumentFilter(new MyDocumentFilter1());
+        ((AbstractDocument) regGrade.getDocument()).setDocumentFilter(new MyDocumentFilter1());
     }
 
     @SuppressWarnings("unchecked")
@@ -85,11 +104,11 @@ public class CoorMain extends javax.swing.JFrame {
         icon1 = new javax.swing.JLabel();
         Violation = new javax.swing.JComboBox();
         SComments = new javax.swing.JTextArea();
-        CoorRemarks = new javax.swing.JTextField();
         DatePanel = new datechooser.beans.DateChooserPanel();
         SaveVio = new javax.swing.JButton();
         errorResponseV = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        charLim = new javax.swing.JLabel();
+        repByBox = new javax.swing.JComboBox();
         bgVio = new javax.swing.JLabel();
         managePanel = new javax.swing.JPanel();
         manFName = new javax.swing.JTextField();
@@ -434,7 +453,7 @@ public class CoorMain extends javax.swing.JFrame {
 
         icon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
         icon1.setText("jLabel5");
-        AddVioPanel.add(icon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 120, 170, 170));
+        AddVioPanel.add(icon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 120, 180, 170));
 
         Violation.setBackground(new java.awt.Color(255, 255, 255));
         Violation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Proselytizing", "Public display of affection ", "Uttering vulgar words or bad words", "Expounding or proclaiming doctrines contrary to law and morals and/or to the Mission and Vision of the University", "Unruly behavior inside the classroom, or while within the University premises", "Unless otherwise authorized for legitimate purpose, bringing gambling paraphernalia inside the campus premises", "Smoking cigarettes, cigar, electronic cigar or cigarettes, within the campus or other areas declared as prohibited zone", "Smoke-belching vehicles, or leaving the car engine on while parked inside the University premises", "Playing of car stereo with the use of bass amplifiers, boosters at high volume", "Violation of the University traffic policy", "Littering and violation of waste disposal policy", "Unauthorized use of the University logo and name", "Repeated failure to wear valid University identification card", "Repeated failure to wear the prescribed uniform, or to comply with the University’s policy on good grooming", "Simple disobedience to lawful orders of school authorities and/or their representatives", "Violation of the rules of conduct on diligence and good grooming", "Violation of the rules and regulations on the use of organization rooms", "Posting on bulletin boards, display of posters, streamers and signboards within the University premises without the approval of the Principal/Dean/Director/Regent/Secretary-General or their authorized representatives", "Other offenses analogous to the foregoing." }));
@@ -445,7 +464,7 @@ public class CoorMain extends javax.swing.JFrame {
                 ViolationActionPerformed(evt);
             }
         });
-        AddVioPanel.add(Violation, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 540, 50));
+        AddVioPanel.add(Violation, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 540, 50));
 
         SComments.setColumns(20);
         SComments.setRows(5);
@@ -457,10 +476,6 @@ public class CoorMain extends javax.swing.JFrame {
             }
         });
         AddVioPanel.add(SComments, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, 740, 240));
-
-        CoorRemarks.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Remarks", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
-        CoorRemarks.setEnabled(false);
-        AddVioPanel.add(CoorRemarks, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 590, 740, 50));
 
         DatePanel.setCurrentView(new datechooser.view.appearance.AppearancesList("Light",
             new datechooser.view.appearance.ViewAppearance("custom",
@@ -508,7 +523,7 @@ public class CoorMain extends javax.swing.JFrame {
     DatePanel.setNavigateFont(new java.awt.Font("Source Code Pro Light", java.awt.Font.PLAIN, 15));
     DatePanel.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_PERIOD);
     DatePanel.setVisible(false);
-    AddVioPanel.add(DatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 230, 160));
+    AddVioPanel.add(DatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 230, 170));
 
     SaveVio.setForeground(new java.awt.Color(246, 245, 244));
     SaveVio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
@@ -527,12 +542,18 @@ public class CoorMain extends javax.swing.JFrame {
     errorResponseV.setForeground(new java.awt.Color(255, 104, 0));
     AddVioPanel.add(errorResponseV, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 250, 30));
 
-    jLabel1.setFont(new java.awt.Font("Source Code Pro Semibold", 0, 12)); // NOI18N
-    jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    jLabel1.setText("Character limit is 255");
-    jLabel1.setBorder(null);
-    AddVioPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 320, 180, 20));
+    charLim.setFont(new java.awt.Font("Source Code Pro Semibold", 0, 12)); // NOI18N
+    charLim.setForeground(new java.awt.Color(102, 102, 102));
+    charLim.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    charLim.setText("Character limit is 255");
+    charLim.setBorder(null);
+    AddVioPanel.add(charLim, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 320, 180, 20));
+
+    repByBox.setForeground(new java.awt.Color(102, 102, 102));
+    repByBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Faculty", "Staff", "Sentry", "Others" }));
+    repByBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reported By", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(102, 102, 102))); // NOI18N
+    repByBox.setEnabled(false);
+    AddVioPanel.add(repByBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 590, 240, 50));
 
     bgVio.setBackground(new java.awt.Color(255, 186, 8));
     bgVio.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -971,9 +992,9 @@ public class CoorMain extends javax.swing.JFrame {
 
             if (!StudentNumber.trim().isEmpty()) {
                 try {
-                    PreparedStatement stmt = conn.prepareStatement(SQLFind);
-                    stmt.setString(1, StudentNumber);
-                    ResultSet records = stmt.executeQuery();
+                    PreparedStatement StateFind = conn.prepareStatement(SQLFind);
+                    StateFind.setString(1, StudentNumber);
+                    ResultSet records = StateFind.executeQuery();
                     if (!records.next()) {
                         errorResponse.setText("<html> Student ID not found on records <br/> &nbsp;&nbsp;&nbsp; Please proceed to register<html>");
                         records.close();
@@ -1004,9 +1025,9 @@ public class CoorMain extends javax.swing.JFrame {
 
         try {
             String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
-            PreparedStatement stmt = conn.prepareStatement(SQLFind);
-            stmt.setString(1, studentNumberInp.getText());
-            ResultSet records = stmt.executeQuery();
+            PreparedStatement StateFind = conn.prepareStatement(SQLFind);
+            StateFind.setString(1, studentNumberInp.getText());
+            ResultSet records = StateFind.executeQuery();
             //restrict non character symbols or integer
 
             if (!studentNumberInp.getText().trim().isEmpty()) {
@@ -1039,6 +1060,8 @@ public class CoorMain extends javax.swing.JFrame {
     }//GEN-LAST:event_searchStudentActionPerformed
 
     private void SaveVioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveVioActionPerformed
+
+        //Pend the implementation of adding major and minor violation categories
         Calendar datePnlSel = Calendar.getInstance();
         Date dateUtil = datePnlSel.getTime();
         SimpleDateFormat Format = new SimpleDateFormat("MM-dd-yyyy");
@@ -1047,24 +1070,24 @@ public class CoorMain extends javax.swing.JFrame {
 
         String vCat = (String) Violation.getSelectedItem();
         String vCom = SComments.getText();
-        String vRem = CoorRemarks.getText();
+        String vRep = (String) repByBox.getSelectedItem();
         String sNumber = studentNumberInp.getText();
 
-        if (!vCat.trim().isEmpty() && !vCom.trim().isEmpty() & !vRem.trim().isEmpty()) {
+        if (!vCat.trim().isEmpty() && !vCom.trim().isEmpty()) {
 
             try {
 
                 String InsQry = "INSERT INTO VIOLATIONINFO VALUES (default,?,?,?,?,?,?,?)";
-                PreparedStatement stmt = conn.prepareStatement(InsQry);
-                stmt.setString(1, vCat);
-                stmt.setString(2, vDate);
-                stmt.setString(3, vTime);
-                stmt.setString(4, vCom);
-                stmt.setString(5, vRem);
-                stmt.setInt(6, Integer.parseInt(sNumber));
-                stmt.setInt(7, Integer.parseInt(UID));
-                stmt.executeUpdate();
-                stmt.close();
+                PreparedStatement StateInsert = conn.prepareStatement(InsQry);
+                StateInsert.setString(1, vCat);
+                StateInsert.setString(2, vDate);
+                StateInsert.setString(3, vTime);
+                StateInsert.setString(4, vCom);
+                StateInsert.setInt(5, Integer.parseInt(sNumber));
+                StateInsert.setInt(6, UID);
+                StateInsert.setString(7, vRep);
+                StateInsert.executeUpdate();
+                StateInsert.close();
                 errorResponseV.setText("Records has been update");
 
             } catch (SQLException ex) {
@@ -1078,7 +1101,7 @@ public class CoorMain extends javax.swing.JFrame {
     }//GEN-LAST:event_SaveVioActionPerformed
 
     private void SCommentsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SCommentsKeyReleased
-        CoorRemarks.setEnabled(true);
+        repByBox.setEnabled(true);
     }//GEN-LAST:event_SCommentsKeyReleased
 
     private void ViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViolationActionPerformed
@@ -1088,7 +1111,6 @@ public class CoorMain extends javax.swing.JFrame {
         } else {
             DatePanel.setVisible(false);
             SComments.setEnabled(false);
-            CoorRemarks.setEnabled(false);
         }
     }//GEN-LAST:event_ViolationActionPerformed
 
@@ -1112,9 +1134,9 @@ public class CoorMain extends javax.swing.JFrame {
 
             if (conn != null) {
                 try {
-                    PreparedStatement stmt3 = conn.prepareStatement(SQLrecords);
-                    stmt3.setInt(1, searchStn);
-                    ResultSet records = stmt3.executeQuery();
+                    PreparedStatement StateRecords = conn.prepareStatement(SQLrecords);
+                    StateRecords.setInt(1, searchStn);
+                    ResultSet records = StateRecords.executeQuery();
                     records.next();
 
                     //add restriction to charater input
@@ -1181,14 +1203,13 @@ public class CoorMain extends javax.swing.JFrame {
     private void AddViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddViolationActionPerformed
 
         //number exception format error from register student side
-        
         try {
             String StudNum = regSNumber.getText();
             int SNumber = Integer.parseInt(StudNum);
             String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
-            PreparedStatement stmt1 = conn.prepareStatement(SQLFind);
-            stmt1.setInt(1, SNumber);
-            ResultSet records = stmt1.executeQuery();
+            PreparedStatement StateFind = conn.prepareStatement(SQLFind);
+            StateFind.setInt(1, SNumber);
+            ResultSet records = StateFind.executeQuery();
 
             if (!regSNumber.getText().trim().isEmpty()) {
 
@@ -1216,9 +1237,9 @@ public class CoorMain extends javax.swing.JFrame {
                 String StudNum = regSNumber.getText();
                 int SNumber = Integer.parseInt(StudNum);
                 String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
-                PreparedStatement stmt1 = conn.prepareStatement(SQLFind);
-                stmt1.setInt(1, SNumber);
-                ResultSet records = stmt1.executeQuery();
+                PreparedStatement StateFind = conn.prepareStatement(SQLFind);
+                StateFind.setInt(1, SNumber);
+                ResultSet records = StateFind.executeQuery();
 
                 if (!records.next()) {
 
@@ -1236,19 +1257,19 @@ public class CoorMain extends javax.swing.JFrame {
                     String SAdv = regAdv.getText();
 
                     try {
-                        PreparedStatement stmt = conn.prepareStatement(SQLupdate);
-                        stmt.setInt(1, StudNum1);
-                        stmt.setString(2, RegFname);
-                        stmt.setString(3, RegMname);
-                        stmt.setString(4, RegLname);
-                        stmt.setString(5, RegGrade);
-                        stmt.setString(6, SSec);
-                        stmt.setString(7, STrack);
-                        stmt.setString(8, SEmail);
-                        stmt.setString(9, SAdv);
-                        stmt.executeUpdate();
-                        stmt.close();
-                        
+                        PreparedStatement StateUpdate = conn.prepareStatement(SQLupdate);
+                        StateUpdate.setInt(1, StudNum1);
+                        StateUpdate.setString(2, RegFname);
+                        StateUpdate.setString(3, RegMname);
+                        StateUpdate.setString(4, RegLname);
+                        StateUpdate.setString(5, RegGrade);
+                        StateUpdate.setString(6, SSec);
+                        StateUpdate.setString(7, STrack);
+                        StateUpdate.setString(8, SEmail);
+                        StateUpdate.setString(9, SAdv);
+                        StateUpdate.executeUpdate();
+                        StateUpdate.close();
+
                         JOptionPane.showMessageDialog(null, "Records successfully added");
 
                     } catch (SQLException ex) {
@@ -1315,40 +1336,40 @@ public class CoorMain extends javax.swing.JFrame {
                     int SNumber = Integer.parseInt(StudNum);
                     int sel = Integer.parseInt(vioTable.getValueAt(ctr, 0).toString());
 
-                    PreparedStatement stmt2 = conn.prepareStatement(SQLUpdate);
-                    stmt2.setInt(1, SNumber);
-                    stmt2.setString(2, manFName.getText());
-                    stmt2.setString(3, manMidName.getText());
-                    stmt2.setString(4, manLName.getText());
-                    stmt2.setString(5, manGrade.getText());
-                    stmt2.setString(6, manSec.getText());
-                    stmt2.setString(7, manStrand.getText());
-                    stmt2.setString(8, manEmail.getText());
-                    stmt2.setString(9, manAdv.getText());
-                    stmt2.setInt(10, SNumber);
-                    stmt2.executeUpdate();
-                    stmt2.close();
+                    PreparedStatement StateUpdate = conn.prepareStatement(SQLUpdate);
+                    StateUpdate.setInt(1, SNumber);
+                    StateUpdate.setString(2, manFName.getText());
+                    StateUpdate.setString(3, manMidName.getText());
+                    StateUpdate.setString(4, manLName.getText());
+                    StateUpdate.setString(5, manGrade.getText());
+                    StateUpdate.setString(6, manSec.getText());
+                    StateUpdate.setString(7, manStrand.getText());
+                    StateUpdate.setString(8, manEmail.getText());
+                    StateUpdate.setString(9, manAdv.getText());
+                    StateUpdate.setInt(10, SNumber);
+                    StateUpdate.executeUpdate();
+                    StateUpdate.close();
 
-                    PreparedStatement stmt6 = conn.prepareStatement(SQLUpdate2);
-                    stmt6.setString(1, (String) vioCombo.getSelectedItem());
-                    stmt6.setString(2, txtFldDate.getText());
-                    stmt6.setString(3, txtFldTime.getText());
-                    stmt6.setString(4, txtFldCom.getText());
-                    stmt6.setString(5, txtFldRem.getText());
-                    stmt6.setInt(6, sel);
-                    stmt6.executeUpdate();
-                    stmt6.close();
+                    PreparedStatement StateUpdate2 = conn.prepareStatement(SQLUpdate2);
+                    StateUpdate2.setString(1, (String) vioCombo.getSelectedItem());
+                    StateUpdate2.setString(2, txtFldDate.getText());
+                    StateUpdate2.setString(3, txtFldTime.getText());
+                    StateUpdate2.setString(4, txtFldCom.getText());
+                    StateUpdate2.setString(5, txtFldRem.getText());
+                    StateUpdate2.setInt(6, sel);
+                    StateUpdate2.executeUpdate();
+                    StateUpdate2.close();
 
                     String lDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
                     String lTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
                     String SQLTrack = "INSERT INTO SYSTEMLOG VALUES (DEFAULT,?,?,?,?,NULL)";
-                    PreparedStatement stmt4 = conn.prepareStatement(SQLTrack);
-                    stmt4.setString(1, lDate);
-                    stmt4.setString(2, lTime);
-                    stmt4.setInt(3, StudentNumber);
-                    stmt4.setString(4, UID);
-                    stmt4.executeUpdate();
-                    stmt4.close();
+                    PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
+                    StateTrack.setString(1, lDate);
+                    StateTrack.setString(2, lTime);
+                    StateTrack.setInt(3, StudentNumber);
+                    StateTrack.setInt(4, UID);
+                    StateTrack.executeUpdate();
+                    StateTrack.close();
 
                     txtFldDate.setVisible(false);
                     vioCombo.setVisible(false);
@@ -1370,7 +1391,6 @@ public class CoorMain extends javax.swing.JFrame {
     private void manRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manRemoveActionPerformed
 
         int ctr = vioTableData.getSelectedRow();
-        int UEID = Integer.parseInt(UID);
         if (ctr >= 0) {
 
             try {
@@ -1381,19 +1401,19 @@ public class CoorMain extends javax.swing.JFrame {
                 String lDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
                 String lTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-                PreparedStatement stmt4 = conn.prepareStatement(SQLTrack);
-                stmt4.setString(1, lDate);
-                stmt4.setString(2, lTime);
-                stmt4.setInt(3, StudentNumber);
-                stmt4.setInt(4, UEID);
-                stmt4.setInt(5, sel);
-                stmt4.executeUpdate();
-                stmt4.close();
+                PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
+                StateTrack.setString(1, lDate);
+                StateTrack.setString(2, lTime);
+                StateTrack.setInt(3, StudentNumber);
+                StateTrack.setInt(4, UID);
+                StateTrack.setInt(5, sel);
+                StateTrack.executeUpdate();
+                StateTrack.close();
 
-                PreparedStatement stmt5 = conn.prepareStatement(SQLRemove);
-                stmt5.setInt(1, sel);
-                stmt5.executeUpdate();
-                stmt5.close();
+                PreparedStatement StateRemove = conn.prepareStatement(SQLRemove);
+                StateRemove.setInt(1, sel);
+                StateRemove.executeUpdate();
+                StateRemove.close();
                 errorResponseMan.setText("Record Deleted Successfully");
 
             } catch (SQLException ex) {
@@ -1446,7 +1466,6 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JPanel AddVioPanel;
     private javax.swing.JButton AddViolation;
     private javax.swing.JPanel CoorMain;
-    private javax.swing.JTextField CoorRemarks;
     private datechooser.beans.DateChooserPanel DatePanel;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel MenuBar;
@@ -1457,6 +1476,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JComboBox Violation;
     private javax.swing.JLabel bgScan;
     private javax.swing.JLabel bgVio;
+    private javax.swing.JLabel charLim;
     private javax.swing.JLabel closeBtn;
     private javax.swing.JLabel errorResponse;
     private javax.swing.JLabel errorResponseMan;
@@ -1465,7 +1485,6 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel generate;
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel logout;
@@ -1504,6 +1523,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JTextField regStrand;
     private javax.swing.JPanel regStudent;
     private javax.swing.JButton register;
+    private javax.swing.JComboBox repByBox;
     private javax.swing.JLabel sNum;
     private javax.swing.JPanel scanPanel;
     private javax.swing.JButton searchStudent;
