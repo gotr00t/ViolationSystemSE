@@ -16,8 +16,16 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Message.RecipientType;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -85,6 +93,7 @@ public class CoorMain extends javax.swing.JFrame {
         searchStudent = new javax.swing.JButton();
         manage = new javax.swing.JButton();
         register = new javax.swing.JButton();
+        sendEmail = new javax.swing.JButton();
         logout = new javax.swing.JLabel();
         generate = new javax.swing.JLabel();
         MainPanel = new javax.swing.JPanel();
@@ -152,6 +161,17 @@ public class CoorMain extends javax.swing.JFrame {
         regSec = new javax.swing.JTextField();
         errorResponseReg = new javax.swing.JLabel();
         regBg = new javax.swing.JLabel();
+        emailPanel = new javax.swing.JPanel();
+        errorResponse1 = new javax.swing.JLabel();
+        SendEmailBtn = new javax.swing.JButton();
+        fromEmail = new javax.swing.JTextField();
+        toField = new javax.swing.JTextField();
+        ccField = new javax.swing.JTextField();
+        subField = new javax.swing.JTextField();
+        emailPass = new javax.swing.JPasswordField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        messageField = new javax.swing.JTextArea();
+        bgScan1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -286,6 +306,26 @@ public class CoorMain extends javax.swing.JFrame {
             }
         });
 
+        sendEmail.setFont(new java.awt.Font("Corbel", 1, 22)); // NOI18N
+        sendEmail.setForeground(new java.awt.Color(255, 255, 255));
+        sendEmail.setText("Send Email");
+        sendEmail.setAlignmentY(0.0F);
+        sendEmail.setBorder(null);
+        sendEmail.setContentAreaFilled(false);
+        sendEmail.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sendEmail.setIconTextGap(0);
+        sendEmail.setMargin(null);
+        sendEmail.setPreferredSize(new java.awt.Dimension(147, 51));
+        sendEmail.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
+        sendEmail.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
+        sendEmail.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
+        sendEmail.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/tab.png"))); // NOI18N
+        sendEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendEmailActionPerformed(evt);
+            }
+        });
+
         logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/logout.png"))); // NOI18N
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -301,24 +341,27 @@ public class CoorMain extends javax.swing.JFrame {
         sidebar.setLayout(sidebarLayout);
         sidebarLayout.setHorizontalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sidebarLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidebarLayout.createSequentialGroup()
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(sidebarLayout.createSequentialGroup()
-                            .addGap(66, 66, 66)
-                            .addComponent(logo))
-                        .addGroup(sidebarLayout.createSequentialGroup()
-                            .addGap(33, 33, 33)
-                            .addComponent(searchStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addGroup(sidebarLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(sidebarLayout.createSequentialGroup()
+                                .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(logout))
+                            .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(sendEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(sidebarLayout.createSequentialGroup()
+                        .addContainerGap(33, Short.MAX_VALUE)
+                        .addComponent(searchStudent, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(37, 37, 37))
             .addGroup(sidebarLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
-                .addComponent(logout)
-                .addGap(51, 51, 51))
+                .addGap(69, 69, 69)
+                .addComponent(logo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sidebarLayout.setVerticalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,12 +373,14 @@ public class CoorMain extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(manage, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sendEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logout)
-                    .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(333, Short.MAX_VALUE))
+                    .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logout))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
 
         SplitPane.setLeftComponent(sidebar);
@@ -945,6 +990,66 @@ public class CoorMain extends javax.swing.JFrame {
 
     MainPanel.add(regStudent, "regPanel");
 
+    emailPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+    errorResponse1.setBackground(new java.awt.Color(255, 255, 255));
+    errorResponse1.setForeground(new java.awt.Color(255, 153, 0));
+    errorResponse1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    errorResponse1.setBorder(null);
+    errorResponse1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    emailPanel.add(errorResponse1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, 450, 50));
+
+    SendEmailBtn.setBackground(new java.awt.Color(255, 255, 255));
+    SendEmailBtn.setForeground(new java.awt.Color(255, 255, 255));
+    SendEmailBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/button2.png"))); // NOI18N
+    SendEmailBtn.setText("Send");
+    SendEmailBtn.setBorder(null);
+    SendEmailBtn.setBorderPainted(false);
+    SendEmailBtn.setContentAreaFilled(false);
+    SendEmailBtn.setFocusPainted(false);
+    SendEmailBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    SendEmailBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            SendEmailBtnActionPerformed(evt);
+        }
+    });
+    emailPanel.add(SendEmailBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 570, 200, 50));
+
+    fromEmail.setBorder(javax.swing.BorderFactory.createTitledBorder("From:"));
+    emailPanel.add(fromEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 70, 340, 50));
+
+    toField.setBorder(javax.swing.BorderFactory.createTitledBorder("To: "));
+    emailPanel.add(toField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 340, 50));
+
+    ccField.setBorder(javax.swing.BorderFactory.createTitledBorder("CC:"));
+    emailPanel.add(ccField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 340, 50));
+
+    subField.setBorder(javax.swing.BorderFactory.createTitledBorder("Subject:"));
+    emailPanel.add(subField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, 580, 50));
+
+    emailPass.setBorder(javax.swing.BorderFactory.createTitledBorder("Password:"));
+    emailPanel.add(emailPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 130, 340, 50));
+
+    messageField.setColumns(20);
+    messageField.setRows(5);
+    messageField.setBorder(javax.swing.BorderFactory.createTitledBorder("Message: "));
+    jScrollPane1.setViewportView(messageField);
+
+    emailPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 920, 300));
+
+    bgScan1.setBackground(new java.awt.Color(255, 186, 8));
+    bgScan1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+    bgScan1.setForeground(new java.awt.Color(51, 51, 51));
+    bgScan1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    bgScan1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/bgg.png"))); // NOI18N
+    bgScan1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+    bgScan1.setMaximumSize(new java.awt.Dimension(1430, 790));
+    bgScan1.setMinimumSize(new java.awt.Dimension(1430, 790));
+    bgScan1.setPreferredSize(new java.awt.Dimension(1430, 790));
+    emailPanel.add(bgScan1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 740));
+
+    MainPanel.add(emailPanel, "emailPanel");
+
     SplitPane.setRightComponent(MainPanel);
 
     CoorMain.add(SplitPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(-3, 50, 1420, 860));
@@ -1187,7 +1292,6 @@ public class CoorMain extends javax.swing.JFrame {
                         }
 
                         records.close();
-                        //searchStn = "";
                         manEdit.setEnabled(true);
 
                     }
@@ -1448,6 +1552,52 @@ public class CoorMain extends javax.swing.JFrame {
         txtFldCom.setText(vioTable.getValueAt(sel, 5).toString());
     }//GEN-LAST:event_vioTableDataMouseClicked
 
+    private void SendEmailBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendEmailBtnActionPerformed
+        String ToEmail = toField.getText();
+        String CCEmail = ccField.getText();
+        String FromEmail = fromEmail.getText();
+        String FromEmailPassword = emailPass.getText();
+        String Subject = subField.getText();
+        String Message = messageField.getText();
+
+        Properties emailProperties = new Properties();
+        emailProperties.put("mail.smtp.auth", "true");
+        emailProperties.put("mail.smtp.host", "smtp.gmail.com");
+        emailProperties.put("mail.smtp.post", "465");
+        emailProperties.put("mail.smtp.socketFactory.port", "465");
+        emailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+        Session session = Session.getDefaultInstance(emailProperties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(FromEmail, FromEmailPassword);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(FromEmail));
+            message.addRecipient(RecipientType.TO, new InternetAddress(ToEmail));
+            message.addRecipient(RecipientType.CC, new InternetAddress(CCEmail));
+            message.setSubject(Subject);
+            message.setText(Message);
+            Transport.send(message);
+            JOptionPane.showMessageDialog(null, "Notification has been successfully sent");
+            toField.setText("");
+            ccField.setText("");
+            fromEmail.setText("");
+            emailPass.setText("");
+            subField.setText("");
+            messageField.setText("");
+
+        } catch (MessagingException ex) {
+            JOptionPane.showMessageDialog(null, "Email not sent");
+        }
+    }//GEN-LAST:event_SendEmailBtnActionPerformed
+
+    private void sendEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendEmailActionPerformed
+        cardLayout.show(MainPanel, "emailPanel");
+    }//GEN-LAST:event_sendEmailActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1471,20 +1621,28 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JPanel MenuBar;
     private javax.swing.JTextArea SComments;
     private javax.swing.JButton SaveVio;
+    private javax.swing.JButton SendEmailBtn;
     private javax.swing.JSplitPane SplitPane;
     private javax.swing.JButton ViewInfo;
     private javax.swing.JComboBox Violation;
     private javax.swing.JLabel bgScan;
+    private javax.swing.JLabel bgScan1;
     private javax.swing.JLabel bgVio;
+    private javax.swing.JTextField ccField;
     private javax.swing.JLabel charLim;
     private javax.swing.JLabel closeBtn;
+    private javax.swing.JPanel emailPanel;
+    private javax.swing.JPasswordField emailPass;
     private javax.swing.JLabel errorResponse;
+    private javax.swing.JLabel errorResponse1;
     private javax.swing.JLabel errorResponseMan;
     private javax.swing.JLabel errorResponseReg;
     private javax.swing.JLabel errorResponseV;
+    private javax.swing.JTextField fromEmail;
     private javax.swing.JLabel generate;
     private javax.swing.JLabel icon;
     private javax.swing.JLabel icon1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel logout;
@@ -1507,6 +1665,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JButton manUpdate;
     private javax.swing.JButton manage;
     private javax.swing.JPanel managePanel;
+    private javax.swing.JTextArea messageField;
     private javax.swing.JLabel minimizeBtn;
     private javax.swing.JTextField regAdv;
     private javax.swing.JLabel regBg;
@@ -1527,6 +1686,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel sNum;
     private javax.swing.JPanel scanPanel;
     private javax.swing.JButton searchStudent;
+    private javax.swing.JButton sendEmail;
     private javax.swing.JPanel sidebar;
     private javax.swing.JLabel studentName;
     private javax.swing.JTextField studentNumberInp;
@@ -1534,6 +1694,8 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JLabel studentSectionLbl;
     private javax.swing.JLabel studentTrack;
     private javax.swing.JLabel studentTrackLbl;
+    private javax.swing.JTextField subField;
+    private javax.swing.JTextField toField;
     private javax.swing.JTextField txtFldCom;
     private javax.swing.JTextField txtFldDate;
     private javax.swing.JTextField txtFldRem;

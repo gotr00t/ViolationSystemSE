@@ -5,7 +5,26 @@
  */
 package violationsystem;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.CardLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +32,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -39,9 +59,9 @@ public class AdminMain extends javax.swing.JFrame {
 
         //set Field Limits for Text Areas
         cardLayout = (CardLayout) (MainPanel.getLayout());
-        ((AbstractDocument)manFName.getDocument()).setDocumentFilter(new MyDocumentFilter());
-        ((AbstractDocument)manMidName.getDocument()).setDocumentFilter(new MyDocumentFilter());
-        ((AbstractDocument)manLName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manFName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manMidName.getDocument()).setDocumentFilter(new MyDocumentFilter());
+        ((AbstractDocument) manLName.getDocument()).setDocumentFilter(new MyDocumentFilter());
         manUser.setDocument(new FieldLimit(16));
         manPass.setDocument(new FieldLimit(16));
         manCPass.setDocument(new FieldLimit(16));
@@ -89,6 +109,7 @@ public class AdminMain extends javax.swing.JFrame {
         LogData = new javax.swing.JTable();
         sysViewRec = new javax.swing.JButton();
         SysDel = new javax.swing.JButton();
+        Archive = new javax.swing.JButton();
         sysLogBg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -552,7 +573,7 @@ public class AdminMain extends javax.swing.JFrame {
                 sysViewRecActionPerformed(evt);
             }
         });
-        logPanel.add(sysViewRec, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 560, -1, 50));
+        logPanel.add(sysViewRec, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 560, -1, 50));
 
         SysDel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         SysDel.setForeground(new java.awt.Color(255, 255, 255));
@@ -567,7 +588,22 @@ public class AdminMain extends javax.swing.JFrame {
                 SysDelActionPerformed(evt);
             }
         });
-        logPanel.add(SysDel, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 560, 160, -1));
+        logPanel.add(SysDel, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 560, 160, 50));
+
+        Archive.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        Archive.setForeground(new java.awt.Color(255, 255, 255));
+        Archive.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/button2.png"))); // NOI18N
+        Archive.setText("Archive");
+        Archive.setBorder(null);
+        Archive.setBorderPainted(false);
+        Archive.setContentAreaFilled(false);
+        Archive.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Archive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ArchiveActionPerformed(evt);
+            }
+        });
+        logPanel.add(Archive, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 560, -1, 50));
 
         sysLogBg.setBackground(new java.awt.Color(255, 186, 8));
         sysLogBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -812,10 +848,10 @@ public class AdminMain extends javax.swing.JFrame {
 
     private void manUserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_manUserKeyReleased
         int ctr = userRecData.getRowCount();
-        
+
         if (!manUser.getText().trim().isEmpty()) {
-            if(ctr==0){
-            manPass.setEnabled(true);
+            if (ctr == 0) {
+                manPass.setEnabled(true);
             }
         } else {
             manPass.setEnabled(false);
@@ -934,7 +970,7 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_manSvBtnActionPerformed
 
     private void manEIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_manEIDKeyReleased
-        
+
         if (!manEID.getText().trim().isEmpty()) {
             manFName.setEnabled(true);
         } else {
@@ -1046,22 +1082,156 @@ public class AdminMain extends javax.swing.JFrame {
     private void userRecDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userRecDataMouseClicked
         DefaultTableModel UserData = (DefaultTableModel) userRecData.getModel();
         int sel = userRecData.getSelectedRow();
-        
-        if (sel>=0){
-        manFName.setEnabled(true);
-        manMidName.setEnabled(true);
-        manLName.setEnabled(true);
-        manUser.setEnabled(true);
-        manRole.setEnabled(true);
-        manEID.setText(UserData.getValueAt(sel, 0).toString());
-        manFName.setText(UserData.getValueAt(sel, 1).toString());
-        manMidName.setText(UserData.getValueAt(sel, 2).toString());
-        manLName.setText(UserData.getValueAt(sel, 3).toString());
-        manUser.setText(UserData.getValueAt(sel, 4).toString());
-        manRole.setSelectedItem(UserData.getValueAt(sel, 5).toString());
+
+        if (sel >= 0) {
+            manFName.setEnabled(true);
+            manMidName.setEnabled(true);
+            manLName.setEnabled(true);
+            manUser.setEnabled(true);
+            manRole.setEnabled(true);
+            manEID.setText(UserData.getValueAt(sel, 0).toString());
+            manFName.setText(UserData.getValueAt(sel, 1).toString());
+            manMidName.setText(UserData.getValueAt(sel, 2).toString());
+            manLName.setText(UserData.getValueAt(sel, 3).toString());
+            manUser.setText(UserData.getValueAt(sel, 4).toString());
+            manRole.setSelectedItem(UserData.getValueAt(sel, 5).toString());
         }
-        
+
     }//GEN-LAST:event_userRecDataMouseClicked
+
+    private void ArchiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ArchiveActionPerformed
+
+        try {
+            String SQLView = "SELECT * FROM SYSTEMLOG";
+            File FileGen = new File("/home/_/GeneratedPdf.pdf");
+            String File2 = "/home/_/" + UID + " " + "Report" + ".pdf";
+            Document document = new Document(PageSize.A4);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(FileGen));
+            writer.setBoxSize("Document", new Rectangle(PageSize.A4));
+            writer.setPageEvent(new HeaderFooter());
+            PreparedStatement StateFind = conn.prepareStatement(SQLView);
+            ResultSet records = StateFind.executeQuery();
+
+            document.open();
+            DocumentContent(document, records, UID);
+            document.close();
+
+            new Pagination().DocumentPass(FileGen, File2, writer);
+            FileGen.delete();
+
+            JOptionPane.showMessageDialog(null, "Successfully Generated PDF");
+        } catch (SQLException | DocumentException | IOException ex) {
+            Logger.getLogger(AdminMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_ArchiveActionPerformed
+
+    private static void DocumentContent(Document document, ResultSet records, int UID) throws DocumentException {
+
+        Paragraph title = new Paragraph();
+        Paragraph genUser = new Paragraph();
+        Paragraph DandT = new Paragraph();
+        title.add("System Logs Generated");
+        title.setAlignment(Element.ALIGN_CENTER);
+        addLine(title, 1);
+
+        try {
+            PdfPTable table = new PdfPTable(6);
+
+            PdfPCell c1 = new PdfPCell(new Phrase("Log ID"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+
+            c1 = new PdfPCell(new Phrase("Date"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+
+            c1 = new PdfPCell(new Phrase("Time"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Violation ID"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("User ID"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Student ID"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            while (records.next()) {
+                table.addCell(records.getString("LOGID"));
+                table.addCell(records.getString("DATE"));
+                table.addCell(records.getString("TIME"));
+                table.addCell(records.getString("STUDENTID"));
+                table.addCell(records.getString("USERID"));
+                table.addCell(records.getString("VIOLATIONID"));
+            }
+            genUser.add("Report generated by: " + UID);
+            DandT.add("Date and Time: " + new Date());
+
+            document.add(title);
+            document.add(table);
+            document.add(genUser);
+            document.add(DandT);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public class HeaderFooter extends PdfPageEventHelper {
+
+        public void onEndPage(PdfWriter writer, Document document) {
+            String header = "Test";
+            String footer = "Test1";
+            Rectangle rect = writer.getBoxSize("Document");
+
+            ColumnText.showTextAligned(writer.getDirectContent(),
+                    Element.ALIGN_CENTER, new Phrase(header),
+                    (rect.getLeft() + rect.getRight()) / 2, rect.getTop() - 16, 0);
+
+            ColumnText.showTextAligned(writer.getDirectContent(),
+                    Element.ALIGN_CENTER, new Phrase(footer),
+                    (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() + 5, 0);
+
+        }
+
+    }
+
+    public class Pagination {
+
+        public void DocumentPass(File FileGen, String File2, PdfWriter writer) throws IOException, DocumentException {
+            Rectangle rect = writer.getBoxSize("Document");
+            PdfReader reader = new PdfReader(new FileInputStream(FileGen));
+            int n = reader.getNumberOfPages();
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(File2));
+            PdfContentByte pagecontent;
+            for (int i = 0; i < n;) {
+                pagecontent = stamper.getOverContent(++i);
+                ColumnText.showTextAligned(pagecontent, Element.ALIGN_CENTER,
+                        new Phrase(String.format("Page %s of %s", i, n)), (rect.getLeft() + 35), rect.getBottom() + 5, 0);
+            }
+            stamper.close();
+            reader.close();
+        }
+    }
+
+    private static void addLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -1077,6 +1247,7 @@ public class AdminMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Archive;
     private javax.swing.JPanel CoorMain;
     private javax.swing.JTable LogData;
     private javax.swing.JPanel MainPanel;
