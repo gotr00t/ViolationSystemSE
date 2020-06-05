@@ -5,7 +5,26 @@
  */
 package violationsystem;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.CardLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +61,7 @@ public class CoorMain extends javax.swing.JFrame {
     Connection conn = DBConnector.ConnectDB();
     int UID;
     CardLayout cardLayout;
-    int StudentNumber;
+    String StudentNumber;
 
     public CoorMain(int DBID) {
 
@@ -144,6 +163,7 @@ public class CoorMain extends javax.swing.JFrame {
         vioCombo = new javax.swing.JComboBox();
         txtFldRem = new javax.swing.JTextField();
         txtFldCom = new javax.swing.JTextField();
+        manGenRep = new javax.swing.JButton();
         manBg = new javax.swing.JLabel();
         regStudent = new javax.swing.JPanel();
         regFName = new javax.swing.JTextField();
@@ -157,7 +177,6 @@ public class CoorMain extends javax.swing.JFrame {
         regSave = new javax.swing.JButton();
         regPhoto = new javax.swing.JLabel();
         regPicUpl = new javax.swing.JButton();
-        AddViolation = new javax.swing.JButton();
         regSec = new javax.swing.JTextField();
         errorResponseReg = new javax.swing.JLabel();
         regBg = new javax.swing.JLabel();
@@ -585,7 +604,7 @@ public class CoorMain extends javax.swing.JFrame {
     AddVioPanel.add(SaveVio, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 650, 150, 50));
 
     errorResponseV.setForeground(new java.awt.Color(255, 104, 0));
-    AddVioPanel.add(errorResponseV, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 250, 30));
+    AddVioPanel.add(errorResponseV, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 250, 30));
 
     charLim.setFont(new java.awt.Font("Source Code Pro Semibold", 0, 12)); // NOI18N
     charLim.setForeground(new java.awt.Color(102, 102, 102));
@@ -697,7 +716,7 @@ public class CoorMain extends javax.swing.JFrame {
 
         },
         new String [] {
-            "VID", "Time", "Date", "Violation", "Remarks", "Comments"
+            "VID", "Time", "Date", "Violation", "Comments", "Reported By"
         }
     ) {
         boolean[] canEdit = new boolean [] {
@@ -839,6 +858,22 @@ public class CoorMain extends javax.swing.JFrame {
     txtFldCom.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
     managePanel.add(txtFldCom, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 620, 240, 40));
 
+    manGenRep.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+    manGenRep.setForeground(new java.awt.Color(255, 255, 255));
+    manGenRep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
+    manGenRep.setText("Generate Report");
+    manGenRep.setBorder(null);
+    manGenRep.setBorderPainted(false);
+    manGenRep.setContentAreaFilled(false);
+    manGenRep.setFocusPainted(false);
+    manGenRep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    manGenRep.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            manGenRepActionPerformed(evt);
+        }
+    });
+    managePanel.add(manGenRep, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 670, 170, 70));
+
     manBg.setBackground(new java.awt.Color(255, 186, 8));
     manBg.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
     manBg.setForeground(new java.awt.Color(51, 51, 51));
@@ -940,7 +975,7 @@ public class CoorMain extends javax.swing.JFrame {
             regSaveActionPerformed(evt);
         }
     });
-    regStudent.add(regSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, -1, -1));
+    regStudent.add(regSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 530, -1, -1));
 
     regPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/icon.png"))); // NOI18N
     regPhoto.setBorder(null);
@@ -949,21 +984,6 @@ public class CoorMain extends javax.swing.JFrame {
 
     regPicUpl.setText("Upload Photo");
     regStudent.add(regPicUpl, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 130, -1));
-
-    AddViolation.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-    AddViolation.setForeground(new java.awt.Color(255, 255, 255));
-    AddViolation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Pictures/smol button.png"))); // NOI18N
-    AddViolation.setText("Add Violation");
-    AddViolation.setBorder(null);
-    AddViolation.setBorderPainted(false);
-    AddViolation.setContentAreaFilled(false);
-    AddViolation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    AddViolation.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            AddViolationActionPerformed(evt);
-        }
-    });
-    regStudent.add(AddViolation, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 540, -1, -1));
 
     regSec.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
     regSec.setForeground(new java.awt.Color(102, 102, 102));
@@ -1230,7 +1250,7 @@ public class CoorMain extends javax.swing.JFrame {
     private void manSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manSearchActionPerformed
 
         try {
-            int searchStn = Integer.parseInt(JOptionPane.showInputDialog("Please input a student number: "));
+            String searchStn = JOptionPane.showInputDialog("Please input a student number: ");
 
             String SQLrecords = "SELECT * FROM STUDENTDATA LEFT OUTER JOIN VIOLATIONINFO ON STUDENTDATA.STUDENTID = VIOLATIONINFO.SIDENT WHERE STUDENTID=?";
             DefaultTableModel vioTable = (DefaultTableModel) vioTableData.getModel();
@@ -1240,7 +1260,7 @@ public class CoorMain extends javax.swing.JFrame {
             if (conn != null) {
                 try {
                     PreparedStatement StateRecords = conn.prepareStatement(SQLrecords);
-                    StateRecords.setInt(1, searchStn);
+                    StateRecords.setInt(1, Integer.parseInt(searchStn));
                     ResultSet records = StateRecords.executeQuery();
                     records.next();
 
@@ -1278,14 +1298,14 @@ public class CoorMain extends javax.swing.JFrame {
                             String vTime = records.getString("VTIME");
                             String violation = records.getString("VIOLATION");
                             String vComments = records.getString("VCOMMENT");
-                            String vRemarks = records.getString("VREMARKS");
+                            String vReporter = records.getString("VREPORTER");
 
                             addData[0] = VID;
                             addData[1] = vDate;
                             addData[2] = vTime;
                             addData[3] = violation;
                             addData[4] = vComments;
-                            addData[5] = vRemarks;
+                            addData[5] = vReporter;
                             vioTable.addRow(addData);
                             records.next();
 
@@ -1303,36 +1323,6 @@ public class CoorMain extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid ID Format");
         }
     }//GEN-LAST:event_manSearchActionPerformed
-
-    private void AddViolationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddViolationActionPerformed
-
-        //number exception format error from register student side
-        try {
-            String StudNum = regSNumber.getText();
-            int SNumber = Integer.parseInt(StudNum);
-            String SQLFind = "SELECT * FROM STUDENTDATA WHERE STUDENTID=?";
-            PreparedStatement StateFind = conn.prepareStatement(SQLFind);
-            StateFind.setInt(1, SNumber);
-            ResultSet records = StateFind.executeQuery();
-
-            if (!regSNumber.getText().trim().isEmpty()) {
-
-                if (records.next()) {
-                    cardLayout.show(MainPanel, "addVioPanel");
-                    records.close();
-                }
-            } else {
-                errorResponseReg.setText("Student number not found");
-                records.close();
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException | NumberFormatException e) {
-            errorResponseReg.setText("Invalid Student Number");
-        }
-
-    }//GEN-LAST:event_AddViolationActionPerformed
 
     private void regSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regSaveActionPerformed
 
@@ -1470,7 +1460,7 @@ public class CoorMain extends javax.swing.JFrame {
                     PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
                     StateTrack.setString(1, lDate);
                     StateTrack.setString(2, lTime);
-                    StateTrack.setInt(3, StudentNumber);
+                    StateTrack.setInt(3, Integer.parseInt(StudentNumber));
                     StateTrack.setInt(4, UID);
                     StateTrack.executeUpdate();
                     StateTrack.close();
@@ -1508,7 +1498,7 @@ public class CoorMain extends javax.swing.JFrame {
                 PreparedStatement StateTrack = conn.prepareStatement(SQLTrack);
                 StateTrack.setString(1, lDate);
                 StateTrack.setString(2, lTime);
-                StateTrack.setInt(3, StudentNumber);
+                StateTrack.setInt(3, Integer.parseInt(StudentNumber));
                 StateTrack.setInt(4, UID);
                 StateTrack.setInt(5, sel);
                 StateTrack.executeUpdate();
@@ -1598,6 +1588,142 @@ public class CoorMain extends javax.swing.JFrame {
         cardLayout.show(MainPanel, "emailPanel");
     }//GEN-LAST:event_sendEmailActionPerformed
 
+    private void manGenRepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manGenRepActionPerformed
+        if(!StudentNumber.trim().isEmpty()){
+        try {
+            String SQLView = "SELECT * FROM VIOLATIONINFO WHERE SIDENT=?";
+            File FileGen = new File("/home/_/StudentPdf.pdf");
+            String File2 = "/home/_/" + UID + " " + "StudentReport" + ".pdf";
+            Document document = new Document(PageSize.A4);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(FileGen));
+            writer.setBoxSize("Document", new Rectangle(PageSize.A4));
+            writer.setPageEvent(new CoorMain.HeaderFooter());
+            PreparedStatement StateFind = conn.prepareStatement(SQLView);
+            StateFind.setInt(1,Integer.parseInt(StudentNumber));
+            ResultSet records = StateFind.executeQuery();
+
+            document.open();
+            DocumentContent(document, records, StudentNumber);
+            document.close();
+
+            new CoorMain.Pagination().DocumentPass(FileGen, File2, writer);
+            FileGen.delete();
+
+            JOptionPane.showMessageDialog(null, "Successfully Generated Report");
+            
+        } catch (SQLException | DocumentException | IOException ex) {
+            Logger.getLogger(CoorMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    }//GEN-LAST:event_manGenRepActionPerformed
+
+    private static void DocumentContent(Document document, ResultSet records, String StudentNumber) throws DocumentException {
+
+        Paragraph title = new Paragraph();
+        Paragraph genUser = new Paragraph();
+        Paragraph DandT = new Paragraph();
+        title.add("Student Report Generated");
+        title.setAlignment(Element.ALIGN_CENTER);
+        addLine(title, 1);
+
+        try {
+            PdfPTable table = new PdfPTable(6);
+
+            PdfPCell c1 = new PdfPCell(new Phrase("VID"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+
+            c1 = new PdfPCell(new Phrase("Date"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+
+            c1 = new PdfPCell(new Phrase("Time"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Violation"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Comments"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            c1 = new PdfPCell(new Phrase("Reported By"));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(c1);
+            table.setHeaderRows(1);
+
+            while (records.next()) {
+                table.addCell(records.getString("VID"));
+                table.addCell(records.getString("VDATE"));
+                table.addCell(records.getString("VTIME"));
+                table.addCell(records.getString("VIOLATION"));
+                table.addCell(records.getString("VCOMMENT"));
+                table.addCell(records.getString("VREPORTER"));
+            }
+            genUser.add("Report generated for: "+ StudentNumber);
+            DandT.add("Date and Time: " + new Date());
+
+            document.add(title);
+            document.add(table);
+            document.add(genUser);
+            document.add(DandT);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public class HeaderFooter extends PdfPageEventHelper {
+
+        public void onEndPage(PdfWriter writer, Document document) {
+            String header = "Student Violation Report";
+            String footer = "Test";
+            Rectangle rect = writer.getBoxSize("Document");
+
+            ColumnText.showTextAligned(writer.getDirectContent(),
+                    Element.ALIGN_CENTER, new Phrase(header),
+                    (rect.getLeft() + rect.getRight()) / 2, rect.getTop() - 16, 0);
+
+            ColumnText.showTextAligned(writer.getDirectContent(),
+                    Element.ALIGN_CENTER, new Phrase(footer),
+                    (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() + 5, 0);
+
+        }
+
+    }
+
+    public class Pagination {
+
+        public void DocumentPass(File FileGen, String File2, PdfWriter writer) throws IOException, DocumentException {
+            Rectangle rect = writer.getBoxSize("Document");
+            PdfReader reader = new PdfReader(new FileInputStream(FileGen));
+            int n = reader.getNumberOfPages();
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(File2));
+            PdfContentByte pagecontent;
+            for (int i = 0; i < n;) {
+                pagecontent = stamper.getOverContent(++i);
+                ColumnText.showTextAligned(pagecontent, Element.ALIGN_CENTER,
+                        new Phrase(String.format("Page %s of %s", i, n)), (rect.getLeft() + 35), rect.getBottom() + 5, 0);
+            }
+            stamper.close();
+            reader.close();
+        }
+    }
+
+    private static void addLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1614,7 +1740,6 @@ public class CoorMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddVio;
     private javax.swing.JPanel AddVioPanel;
-    private javax.swing.JButton AddViolation;
     private javax.swing.JPanel CoorMain;
     private datechooser.beans.DateChooserPanel DatePanel;
     private javax.swing.JPanel MainPanel;
@@ -1651,6 +1776,7 @@ public class CoorMain extends javax.swing.JFrame {
     private javax.swing.JButton manEdit;
     private javax.swing.JTextField manEmail;
     private javax.swing.JTextField manFName;
+    private javax.swing.JButton manGenRep;
     private javax.swing.JTextField manGrade;
     private javax.swing.JTextField manLName;
     private javax.swing.JTextField manMidName;
